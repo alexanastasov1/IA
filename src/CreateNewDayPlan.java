@@ -10,13 +10,9 @@ public class CreateNewDayPlan {
     private int start_endPoint;
     private int timeSpan;
     private int attractionType;
+    private ArrayList<String> attractions = new ArrayList<>();
 
     public CreateNewDayPlan() {
-        ArrayList<String> attractions = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
-
-        System.out.print("Enter city name: ");
-        String choice = input.nextLine();
         try {
             FileReader fr = new FileReader(fileName);
             BufferedReader br = new BufferedReader(fr);
@@ -24,25 +20,50 @@ public class CreateNewDayPlan {
             attractions.add(line);
 
             while (line != null) {
-                System.out.println(line);
                 line = br.readLine();
                 attractions.add(line);
-            }
-
-            boolean notFound = true;
-            if (notFound = true) {
-                for (int i = 0; i < attractions.size(); i++) {
-                    if (attractions.get(i) == choice);
-                    notFound = false;
-                }
-            }
-            else {
-                System.out.print("Enter city name: ");
-                choice = input.nextLine();
             }
         }
         catch(IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    /* public boolean cityValidation(){
+        Scanner input = new Scanner(System.in);
+
+        System.out.print("Enter city name: ");
+        String choice = input.nextLine();
+
+        for(int i = 0; i < attractions.size(); i++) {
+            if((attractions.get(0)).substring(0,6).equals(choice)) {
+                return true;
+            }
+        }
+        System.out.println("City not in database");
+        System.out.print("Enter city name: ");
+        choice = input.nextLine();
+
+        System.out.println((attractions.get(0)).substring(0,6));
+        return true;
+    } */
+
+    public boolean cityValidation() {
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Enter city name: ");
+            String choice = input.nextLine();
+
+            for (int i = 0; i < attractions.size(); i++) {
+                String cityName = attractions.get(i).split(";")[0].trim(); // Extract city name
+                System.out.println(cityName);
+                if (cityName.equalsIgnoreCase(choice)) { // Case-insensitive comparison
+                    return true; // Valid city found
+                }
+            }
+
+            System.out.println("City not in database. Please try again.");
         }
     }
 }

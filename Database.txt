@@ -1,0 +1,20 @@
+London; British Museum; museum; 2.5; 51.5194; -0.1270
+London; Natural History Museum; museum; 2.0; 51.4967; -0.1764
+London; Science Museum; museum; 2.0; 51.4978; -0.1745
+London; Victoria and Albert Museum; museum; 2.0; 51.4966; -0.1722
+London; National Gallery; museum; 2.0; 51.5086; -0.1283
+London; Tate Modern; museum; 2.0; 51.5076; -0.0994
+London; Imperial War Museum; museum; 2.0; 51.4957; -0.1083
+London; Museum of London; museum; 2.0; 51.5176; -0.0968
+London; Design Museum; museum; 1.5; 51.4990; -0.1984
+London; London Transport Museum; museum; 1.5; 51.5119; -0.1216
+London; Churchill War Rooms; museum; 1.5; 51.5024; -0.1291
+London; Bank of England Museum; museum; 1.0; 51.5145; -0.0889
+London; Charles Dickens Museum; museum; 1.5; 51.5235; -0.1173
+London; Florence Nightingale Museum; museum; 1.0; 51.4983; -0.1186
+London; Handel & Hendrix in London; museum; 1.5; 51.5143; -0.1480
+London; Keats House; museum; 1.5; 51.5555; -0.1652
+London; London Canal Museum; museum; 1.0; 51.5341; -0.1199
+London; London Film Museum; museum; 1.5; 51.5115; -0.1220
+London; London Mithraeum; museum; 1.0; 51.5135; -0.0901
+London; Museum of Brands; museum; 1.5; 51.5179; -0.1984
