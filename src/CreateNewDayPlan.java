@@ -29,41 +29,81 @@ public class CreateNewDayPlan {
         }
     }
 
-    /* public boolean cityValidation(){
-        Scanner input = new Scanner(System.in);
-
-        System.out.print("Enter city name: ");
-        String choice = input.nextLine();
-
-        for(int i = 0; i < attractions.size(); i++) {
-            if((attractions.get(0)).substring(0,6).equals(choice)) {
-                return true;
-            }
-        }
-        System.out.println("City not in database");
-        System.out.print("Enter city name: ");
-        choice = input.nextLine();
-
-        System.out.println((attractions.get(0)).substring(0,6));
-        return true;
-    } */
-
     public boolean cityValidation() {
         Scanner input = new Scanner(System.in);
+
+        if (attractions.isEmpty()) {
+            System.out.println("Error: No cities found in the database.");
+            return false;
+        }
 
         while (true) {
             System.out.print("Enter city name: ");
             String choice = input.nextLine();
 
             for (int i = 0; i < attractions.size(); i++) {
-                String cityName = attractions.get(i).split(";")[0].trim(); // Extract city name
-                System.out.println(cityName);
-                if (cityName.equalsIgnoreCase(choice)) { // Case-insensitive comparison
-                    return true; // Valid city found
+                String attraction = attractions.get(i);
+
+                if (attraction != null && !attraction.isBlank()) { // Avoid null/blank entries
+                    String cityName = attraction.split(";")[0].trim(); // Extract city name
+                    if (cityName.equalsIgnoreCase(choice)) { // Case-insensitive match
+                        System.out.println("City in database");
+                        return true; // Valid city found
+                    }
                 }
             }
 
             System.out.println("City not in database. Please try again.");
         }
     }
+
+
+    /* public void setStart_endPoint() {
+    } */
+
+    public void favouredAttractionType() {    //CHECK
+        Scanner input = new Scanner(System.in);
+        String[] attractionTypes = {
+                "Museum", "Historical Site", "Park", "Gallery", "Landmark",
+                "Theme Park", "Zoo", "Theater", "Shopping", "Sports Venue"
+        };
+
+        System.out.println("Choose your preferred attraction type:");
+        for (int i = 0; i < attractionTypes.length; i++) {
+            System.out.println((i + 1) + ". " + attractionTypes[i]);
+        }
+
+        while (true) {
+            System.out.print("Enter the number corresponding to your choice: ");
+            if (input.hasNextInt()) {
+                int choice = input.nextInt();
+                if (choice >= 1 && choice <= attractionTypes.length) {
+                    attractionType = choice; // Store chosen attraction type
+                    System.out.println("You selected: " + attractionTypes[choice - 1]);
+                    return;
+                }
+            }
+            System.out.println("Invalid choice. Please enter a valid number.");
+            input.nextLine(); // Clear invalid input
+        }
+    }
+
+    public double getTimeSpan() {
+        Scanner input = new Scanner(System.in);
+
+        while (true) {
+            System.out.print("Enter the number of hours you plan to spend (e.g., 3.5): ");
+
+            if (input.hasNextDouble()) {
+                double time = input.nextDouble();
+                if (time > 0 && time <= 24) {
+                    timeSpan = (int) time; // Store as integer if needed, or use double
+                    return time;
+                }
+            }
+            input.nextLine(); // Clear invalid input
+            System.out.println("Invalid input. Please enter a valid number.");
+        }
+    }
+
 }
