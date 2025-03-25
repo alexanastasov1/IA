@@ -10,6 +10,7 @@ public class Main {
                 CreateNewDayPlan createNewDayPlanMenu = new CreateNewDayPlan();
                 createNewDayPlanMenu.cityValidation();
                 createNewDayPlanMenu.getTimeSpan();
+                createNewDayPlanMenu.favouredAttractionType();
             }
             else if(choice == 2) { //Open SavedDayPlans menu if button pressed
 

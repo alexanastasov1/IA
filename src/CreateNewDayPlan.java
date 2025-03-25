@@ -45,9 +45,10 @@ public class CreateNewDayPlan {
                 String attraction = attractions.get(i);
 
                 if (attraction != null && !attraction.isBlank()) { // Avoid null/blank entries
-                    String cityName = attraction.split(";")[0].trim(); // Extract city name
-                    if (cityName.equalsIgnoreCase(choice)) { // Case-insensitive match
-                        System.out.println("City in database");
+                    String city = attraction.split(";")[0].trim(); // Extract city name
+                    if (city.equalsIgnoreCase(choice)) { // Case-insensitive match
+                        System.out.println(city + " is in database");
+                        this.cityName = city;
                         return true; // Valid city found
                     }
                 }
@@ -56,7 +57,6 @@ public class CreateNewDayPlan {
             System.out.println("City not in database. Please try again.");
         }
     }
-
 
     /* public void setStart_endPoint() {
     } */
@@ -106,4 +106,8 @@ public class CreateNewDayPlan {
         }
     }
 
+    public boolean create() {
+        Scanner input = new Scanner(System.in);
+        return true;
+    }
 }

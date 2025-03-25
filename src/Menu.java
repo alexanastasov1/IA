@@ -11,7 +11,7 @@ public class Menu {
         System.out.println("3. Exit");
 
         while (true) {
-            System.out.print("Enter your choice: ");
+            System.out.print("Enter the number corresponding to your choice: ");
             if (scanner.hasNextInt()) {
                 int choice = scanner.nextInt();
 
