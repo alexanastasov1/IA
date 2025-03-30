@@ -58,8 +58,51 @@ public class CreateNewDayPlan {
         }
     }
 
-    /* public void setStart_endPoint() {
-    } */
+    public void setStart_endPoint() {
+        if (cityName == null || cityName.isEmpty()) {
+            System.out.println("Error: City not set. Please validate a city first.");
+            return;
+        }
+
+        // Generate Google Maps search URL for the selected city
+        String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=" + cityName.replace(" ", "+");
+        System.out.println("Open the following link to select your start and end point on the map:");
+        System.out.println(googleMapsUrl);
+
+        Scanner input = new Scanner(System.in);
+
+        // Prompt user for latitude and longitude in a single line
+        double latitude;
+        double longitude;
+        while (true) {
+            try {
+                System.out.print("Enter the latitude and longitude of the selected point (e.g., 51.519243, -0.102918 or 51.519243 -0.102918): ");
+                String userInput = input.nextLine().trim();
+
+                // Split input by comma or space
+                String[] coordinates = userInput.split("[,\\s]+");
+
+                if (coordinates.length == 2) {
+                    latitude = Double.parseDouble(coordinates[0]);
+                    longitude = Double.parseDouble(coordinates[1]);
+
+                    // Validate latitude and longitude ranges
+                    if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
+                        break;
+                    } else {
+                        System.out.println("Invalid coordinates. Latitude must be between -90 and 90, and longitude between -180 and 180.");
+                    }
+                } else {
+                    System.out.println("Invalid format. Please enter the coordinates in the format: latitude, longitude.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter numeric values.");
+            }
+        }
+
+        // Store the start and end point
+        System.out.println("Start/End point set at: Latitude " + latitude + ", Longitude " + longitude);
+    }
 
     public void favouredAttractionType() {    //CHECK
         Scanner input = new Scanner(System.in);
