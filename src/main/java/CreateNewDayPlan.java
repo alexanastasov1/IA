@@ -103,7 +103,7 @@ public class CreateNewDayPlan {
         System.out.println("Start/end point set at: Latitude " + latitude + ", Longitude " + longitude);
     }
 
-    public void favouredAttractionType() {    //CHECK
+    public void favouredAttractionType() {
         Scanner input = new Scanner(System.in);
         String[] attractionTypes = {
                 "Museum", "Historical Site", "Park", "Gallery", "Landmark",
