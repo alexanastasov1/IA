@@ -7,7 +7,6 @@ import java.util.Scanner;
 public class CreateNewDayPlan {
     private String fileName = "Database.txt";
     private String cityName;
-    private int start_endPoint;
     private int timeSpan;
     private int attractionType;
     private ArrayList<String> attractions = new ArrayList<>();
@@ -47,7 +46,7 @@ public class CreateNewDayPlan {
                 if (attraction != null && !attraction.isBlank()) { // Avoid null/blank entries
                     String city = attraction.split(";")[0].trim(); // Extract city name
                     if (city.equalsIgnoreCase(choice)) { // Case-insensitive match
-                        System.out.println(city + " is in database");
+                        System.out.println(city + " is in database.");
                         this.cityName = city;
                         return true; // Valid city found
                     }
@@ -66,7 +65,7 @@ public class CreateNewDayPlan {
 
         // Generate Google Maps search URL for the selected city
         String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=" + cityName.replace(" ", "+");
-        System.out.println("Open the following link to select your start and end point on the map:");
+        System.out.println("Open the following link and right click to select your start and end point on the map:");
         System.out.println(googleMapsUrl);
 
         Scanner input = new Scanner(System.in);
@@ -76,7 +75,7 @@ public class CreateNewDayPlan {
         double longitude;
         while (true) {
             try {
-                System.out.print("Enter the latitude and longitude of the selected point (e.g., 51.519243, -0.102918 or 51.519243 -0.102918): ");
+                System.out.print("Enter the latitude and longitude of the selected point: ");
                 String userInput = input.nextLine().trim();
 
                 // Split input by comma or space
@@ -101,7 +100,7 @@ public class CreateNewDayPlan {
         }
 
         // Store the start and end point
-        System.out.println("Start/End point set at: Latitude " + latitude + ", Longitude " + longitude);
+        System.out.println("Start/end point set at: Latitude " + latitude + ", Longitude " + longitude);
     }
 
     public void favouredAttractionType() {    //CHECK
@@ -122,7 +121,7 @@ public class CreateNewDayPlan {
                 int choice = input.nextInt();
                 if (choice >= 1 && choice <= attractionTypes.length) {
                     attractionType = choice; // Store chosen attraction type
-                    System.out.println("You selected: " + attractionTypes[choice - 1]);
+                    System.out.println("Preferred attraction type set as: " + attractionTypes[choice - 1]);
                     return;
                 }
             }
