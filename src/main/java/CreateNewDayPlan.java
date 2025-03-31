@@ -103,7 +103,7 @@ public class CreateNewDayPlan {
         System.out.println("Start/end point set at: Latitude " + latitude + ", Longitude " + longitude);
     }
 
-    public void favouredAttractionType() {
+    public String favouredAttractionType() {
         Scanner input = new Scanner(System.in);
         String[] attractionTypes = {
                 "Museum", "Historical Site", "Park", "Gallery", "Landmark",
@@ -122,7 +122,7 @@ public class CreateNewDayPlan {
                 if (choice >= 1 && choice <= attractionTypes.length) {
                     attractionType = attractionTypes[choice-1]; // Store chosen attraction type
                     System.out.println("Preferred attraction type set as: " + attractionTypes[choice - 1]);
-                    return;
+                    return attractionType;
                 }
             }
             System.out.println("Invalid choice. Please enter a valid number.");
@@ -140,7 +140,7 @@ public class CreateNewDayPlan {
                 double time = input.nextDouble();
                 if (time > 0 && time <= 24) {
                     timeSpan = time;
-                    return time;
+                    return timeSpan;
                 }
             }
             input.nextLine(); // Clear invalid input
@@ -148,8 +148,9 @@ public class CreateNewDayPlan {
         }
     }
 
-    /* public boolean create() {
-        Scanner input = new Scanner(System.in);
-        return true;
-    } */
+    public CreatedDayPlan create() {
+        System.out.println("Day plan successfully created!");
+
+        return new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
+    }
 }

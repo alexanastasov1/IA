@@ -13,8 +13,4 @@ public class CreatedDayPlan {
         this.timeSpan = timeSpan;
         this.attractionType = attractionType;
     }
-
-    public void create() {
-
-    }
 }
