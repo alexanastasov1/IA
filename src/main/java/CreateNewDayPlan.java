@@ -7,8 +7,10 @@ import java.util.Scanner;
 public class CreateNewDayPlan {
     private String fileName = "Database.txt";
     private String cityName;
-    private int timeSpan;
-    private int attractionType;
+    private double latitude;
+    private double longitude;
+    private double timeSpan;
+    private String attractionType;
     private ArrayList<String> attractions = new ArrayList<>();
 
     public CreateNewDayPlan() {
@@ -71,8 +73,6 @@ public class CreateNewDayPlan {
         Scanner input = new Scanner(System.in);
 
         // Prompt user for latitude and longitude in a single line
-        double latitude;
-        double longitude;
         while (true) {
             try {
                 System.out.print("Enter the latitude and longitude of the selected point: ");
@@ -120,7 +120,7 @@ public class CreateNewDayPlan {
             if (input.hasNextInt()) {
                 int choice = input.nextInt();
                 if (choice >= 1 && choice <= attractionTypes.length) {
-                    attractionType = choice; // Store chosen attraction type
+                    attractionType = attractionTypes[choice-1]; // Store chosen attraction type
                     System.out.println("Preferred attraction type set as: " + attractionTypes[choice - 1]);
                     return;
                 }
@@ -139,7 +139,7 @@ public class CreateNewDayPlan {
             if (input.hasNextDouble()) {
                 double time = input.nextDouble();
                 if (time > 0 && time <= 24) {
-                    timeSpan = (int) time; // Store as integer if needed, or use double
+                    timeSpan = time;
                     return time;
                 }
             }
@@ -148,8 +148,8 @@ public class CreateNewDayPlan {
         }
     }
 
-    public boolean create() {
+    /* public boolean create() {
         Scanner input = new Scanner(System.in);
         return true;
-    }
+    } */
 }

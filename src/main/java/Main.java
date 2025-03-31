@@ -21,8 +21,8 @@ public class Main {
             if (choice == 1){ //Open CreateNewDayPlan menu if button pressed
                 CreateNewDayPlan createNewDayPlanMenu = new CreateNewDayPlan();
                 createNewDayPlanMenu.cityValidation();
-                createNewDayPlanMenu.getTimeSpan();
                 createNewDayPlanMenu.setStart_endPoint();
+                createNewDayPlanMenu.getTimeSpan();
                 createNewDayPlanMenu.favouredAttractionType();
             }
             else if(choice == 2) { //Open SavedDayPlans menu if button pressed
