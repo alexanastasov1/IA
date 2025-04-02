@@ -25,6 +25,7 @@ public class Main {
                 createNewDayPlanMenu.getTimeSpan();
                 createNewDayPlanMenu.favouredAttractionType();
                 CreatedDayPlan createdDayPlanMenu = createNewDayPlanMenu.create();
+                createdDayPlanMenu.create();
             }
             else if(choice == 2) { //Open SavedDayPlans menu if button pressed
 
