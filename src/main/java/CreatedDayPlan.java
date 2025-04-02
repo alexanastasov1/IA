@@ -32,9 +32,15 @@ public class CreatedDayPlan {
             String line;
             while ((line = br.readLine()) != null) {
                 String[] data = line.split("; ");
-                if (data.length == 6) { // Ensuring correct data format
-                    attractions.add(new Attraction(data[0], data[1], data[2], Double.parseDouble(data[3]),
-                            Double.parseDouble(data[4]), Double.parseDouble(data[5])));
+                if (data.length == 6) {
+                    String city = data[0];
+                    String name = data[1];
+                    String type = data[2];
+                    double timeAdvised = Double.parseDouble(data[3]);
+                    double latitude = Double.parseDouble(data[4]);
+                    double longitude = Double.parseDouble(data[5]);
+
+                    attractions.add(new Attraction(city, name, type, timeAdvised, latitude, longitude));
                 }
             }
         } catch (IOException e) {
@@ -46,7 +52,8 @@ public class CreatedDayPlan {
     // Filters attractions based on the selected city and attraction type
     private List<Attraction> filterAttractions(List<Attraction> attractions) {
         List<Attraction> filtered = new ArrayList<>();
-        for (Attraction a : attractions) {
+        for (int i = 0; i < attractions.size(); i++) {
+            Attraction a = attractions.get(i);
             if (a.city.equals(cityName) && a.type.equals(attractionType)) {
                 filtered.add(a);
             }
@@ -66,12 +73,18 @@ public class CreatedDayPlan {
             Attraction closest = findClosestAttraction(attractions, currentLat, currentLon, visited);
             if (closest == null || totalTime + closest.timeAdvised > timeSpan + 0.5) break; // Stop if time exceeds limit
 
-            route.add(closest); // Add to the itinerary
+            route.add(closest); // Add to route
             visited.add(closest.name); // Mark as visited
             totalTime += closest.timeAdvised; // Update total time used
             currentLat = closest.latitude; // Update current location
             currentLon = closest.longitude;
-            attractions.remove(closest); // Remove from remaining attractions
+
+            for (int i = 0; i < attractions.size(); i++) {
+                if (attractions.get(i).name.equals(closest.name)) {
+                    attractions.remove(i);
+                    break;
+                }
+            }
         }
         return route;
     }
@@ -80,10 +93,12 @@ public class CreatedDayPlan {
     private Attraction findClosestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
         Attraction closest = null;
         double minDistance = Double.MAX_VALUE;
-        for (Attraction a : attractions) {
+
+        for (int i = 0; i < attractions.size(); i++) {
+            Attraction a = attractions.get(i);
             if (!visited.contains(a.name)) { // Check if attraction has already been visited
                 double distance = haversine(lat, lon, a.latitude, a.longitude);
-                if (distance < minDistance) { // Update closest attraction if distance is shorter
+                if (distance < minDistance) { // Update the closest attraction if distance is shorter
                     minDistance = distance;
                     closest = a;
                 }
@@ -106,16 +121,21 @@ public class CreatedDayPlan {
 
     // Displays the planned route
     private void displayRoute(List<Attraction> route) {
-        System.out.println("Planned itinerary:");
-        for (Attraction a : route) {
+        System.out.println("Planned route:");
+        for (int i = 0; i < route.size(); i++) {
+            Attraction a = route.get(i);
             System.out.println(a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
         }
     }
 
-    // Inner class representing an Attraction
+    //Attraction
     private static class Attraction {
-        String city, name, type;
-        double timeAdvised, latitude, longitude;
+        String city;
+        String name;
+        String type;
+        double timeAdvised;
+        double latitude;
+        double longitude;
 
         Attraction(String city, String name, String type, double timeAdvised, double latitude, double longitude) {
             this.city = city;
@@ -127,4 +147,5 @@ public class CreatedDayPlan {
         }
     }
 }
+
 

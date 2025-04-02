@@ -13,23 +13,25 @@ public class CreateNewDayPlan {
     private String attractionType;
     private ArrayList<String> attractions = new ArrayList<>();
 
+    // Constructor to load the attractions database from file
     public CreateNewDayPlan() {
         try {
             FileReader fr = new FileReader(fileName);
             BufferedReader br = new BufferedReader(fr);
             String line = br.readLine();
-            attractions.add(line);
 
+            // Read all lines from the file and store them in the attractions list
             while (line != null) {
-                line = br.readLine();
                 attractions.add(line);
+                line = br.readLine();
             }
-        }
-        catch(IOException e) {
+            br.close();
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    // Validates the city name input by the user
     public boolean cityValidation() {
         Scanner input = new Scanner(System.in);
 
@@ -42,6 +44,7 @@ public class CreateNewDayPlan {
             System.out.print("Enter city name: ");
             String choice = input.nextLine();
 
+            // Iterate through the stored attractions to find a matching city
             for (int i = 0; i < attractions.size(); i++) {
                 String attraction = attractions.get(i);
 
@@ -54,11 +57,11 @@ public class CreateNewDayPlan {
                     }
                 }
             }
-
             System.out.println("City not in database. Please try again.");
         }
     }
 
+    // Sets the start and end point by allowing the user to input coordinates
     public void setStart_endPoint() {
         if (cityName == null || cityName.isEmpty()) {
             System.out.println("Error: City not set. Please validate a city first.");
@@ -67,12 +70,12 @@ public class CreateNewDayPlan {
 
         // Generate Google Maps search URL for the selected city
         String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=" + cityName.replace(" ", "+");
-        System.out.println("Open the following link and right click to select your start and end point on the map:");
+        System.out.println("Open the following link and right-click to select your start and end point on the map:");
         System.out.println(googleMapsUrl);
 
         Scanner input = new Scanner(System.in);
 
-        // Prompt user for latitude and longitude in a single line
+        // Prompt user for latitude and longitude
         while (true) {
             try {
                 System.out.print("Enter the latitude and longitude of the selected point: ");
@@ -99,10 +102,11 @@ public class CreateNewDayPlan {
             }
         }
 
-        // Store the start and end point
+        // Display the set coordinates
         System.out.println("Start/end point set at: Latitude " + latitude + ", Longitude " + longitude);
     }
 
+    // Allows the user to select their preferred attraction type
     public String favouredAttractionType() {
         Scanner input = new Scanner(System.in);
         String[] attractionTypes = {
@@ -120,8 +124,8 @@ public class CreateNewDayPlan {
             if (input.hasNextInt()) {
                 int choice = input.nextInt();
                 if (choice >= 1 && choice <= attractionTypes.length) {
-                    attractionType = attractionTypes[choice-1]; // Store chosen attraction type
-                    System.out.println("Preferred attraction type set as: " + attractionTypes[choice - 1]);
+                    attractionType = attractionTypes[choice - 1]; // Store chosen attraction type
+                    System.out.println("Preferred attraction type set as: " + attractionType);
                     return attractionType;
                 }
             }
@@ -130,6 +134,7 @@ public class CreateNewDayPlan {
         }
     }
 
+    // Gets the time span the user wants to spend on the plan
     public double getTimeSpan() {
         Scanner input = new Scanner(System.in);
 
@@ -148,9 +153,9 @@ public class CreateNewDayPlan {
         }
     }
 
+    // Creates a new day plan based on user input
     public CreatedDayPlan create() {
         System.out.println("Day plan successfully created!");
-
         return new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
     }
 }
