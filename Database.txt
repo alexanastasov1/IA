@@ -4,23 +4,24 @@ London; Houses of Parliament & Big Ben; Historical Site; 2.0; 51.5007; -0.1246
 London; St. Paul's Cathedral; Historical Site; 2.0; 51.5138; -0.0984
 London; Churchill War Rooms; Historical Site; 1.5; 51.5024; -0.1291
 London; Hampton Court Palace; Historical Site; 3.0; 51.4036; -0.3373
-London; The Monument to the Great Fire of London; Historical Site; 1.5; 51.5104; -0.0865
+London; The Monument to the Great Fire of London; Historical Site; 1.0; 51.5104; -0.0865
 London; Handel & Hendrix in London; Historical Site; 1.5; 51.5143; -0.1480
 London; Keats House; Historical Site; 1.5; 51.5555; -0.1652
 London; London Mithraeum; Historical Site; 1.0; 51.5135; -0.0901
-London; Downing Street; Historical Site; 1.0; 51.5034; -0.1276
-London; Buckingham Palace; Landmark; 1.5; 51.5014; -0.1419
-London; Tower Bridge; Landmark; 1.5; 51.5055; -0.0754
-London; The Shard; Landmark; 2.5; 51.5045; -0.0865
-London; Trafalgar Square; Landmark; 1.0; 51.5080; -0.1281
-London; Piccadilly Circus; Landmark; 1.5; 51.5101; -0.1340
-London; Leicester Square; Landmark; 1.5; 51.5116; -0.1283
-London; Soho; Landmark; 2.0; 51.5136; -0.1365
-London; Hyde Park; Park; 2.5; 51.5073; -0.1657
+London; Downing Street; Historical Site; 0.5; 51.5034; -0.1276
+London; London Eye; Landmark; 1.5; 51.5033; -0.1195
+London; Buckingham Palace; Landmark; 1.0; 51.5014; -0.1419
+London; Tower Bridge; Landmark; 1.0; 51.5055; -0.0754
+London; The Shard; Landmark; 1.5; 51.5045; -0.0865
+London; Trafalgar Square; Landmark; 0.5; 51.5080; -0.1281
+London; Piccadilly Circus; Landmark; 1.0; 51.5101; -0.1340
+London; Leicester Square; Landmark; 1.0; 51.5116; -0.1283
+London; Soho; Landmark; 1.5; 51.5136; -0.1365
+London; Hyde Park; Park; 2.0; 51.5073; -0.1657
 London; Kew Gardens; Park; 3.0; 51.4787; -0.2956
 London; Regent's Park; Park; 2.0; 51.5313; -0.1569
 London; Greenwich Park; Park; 2.0; 51.4769; -0.0005
-London; St. James's Park; Park; 2.0; 51.5020; -0.1347
+London; St. James's Park; Park; 1.5; 51.5020; -0.1347
 London; Richmond Park; Park; 2.5; 51.4458; -0.2780
 London; The National Gallery; Gallery; 2.0; 51.5086; -0.1283
 London; Tate Modern; Gallery; 2.0; 51.5076; -0.0994
@@ -32,7 +33,6 @@ London; Natural History Museum; Museum; 2.0; 51.4967; -0.1764
 London; Science Museum; Museum; 2.0; 51.4978; -0.1745
 London; Victoria and Albert Museum; Museum; 2.0; 51.4966; -0.1722
 London; Imperial War Museum; Museum; 2.0; 51.4957; -0.1083
-London; Museum of London; Museum; 2.0; 51.5176; -0.0968
 London; Royal Observatory Greenwich; Museum; 2.0; 51.4769; -0.0005
 London; Madame Tussauds London; Museum; 2.0; 51.5229; -0.1549
 London; Design Museum; Museum; 1.5; 51.4990; -0.1984
@@ -42,27 +42,30 @@ London; London Film Museum; Museum; 1.5; 51.5115; -0.1220
 London; Museum of Brands; Museum; 1.5; 51.5179; -0.1984
 London; Sherlock Holmes Museum; Museum; 1.5; 51.5238; -0.1586
 London; Bank of England Museum; Museum; 1.0; 51.5145; -0.0889
+London; HMS Belfast; Historical Site; 1.5; 51.5066; -0.0814
 London; Florence Nightingale Museum; Museum; 1.0; 51.4983; -0.1186
+London; Sea Life London Aquarium; Museum; 1.5; 51.5025; -0.1194
 London; London Canal Museum; Museum; 1.0; 51.5341; -0.1199
-London; Oxford Street & Regent Street; Shopping; 2.5; 51.5145; -0.1420
-London; Harrods; Shopping; 2.5; 51.4995; -0.1634
-London; Camden Market; Shopping; 2.5; 51.5416; -0.1468
-London; Westfield London; Shopping; 2.5; 51.5078; -0.2195
+London; Oxford Street & Regent Street; Shopping; 2.0; 51.5145; -0.1420
+London; Harrods; Shopping; 2.0; 51.4995; -0.1634
+London; Camden Market; Shopping; 2.0; 51.5416; -0.1468
+London; Westfield London; Shopping; 2.0; 51.5078; -0.2195
 London; Covent Garden Market; Shopping; 2.0; 51.5129; -0.1221
-London; Royal Opera House; Theater; 2.5; 51.5129; -0.1221
-London; Shakespeare's Globe Theatre; Theater; 2.0; 51.5081; -0.0972
-London; Lyceum Theatre; Theater; 2.0; 51.5113; -0.1194
-London; The Globe Theatre; Theater; 2.0; 51.5081; -0.0972
-London; Barbican Centre; Theater; 2.0; 51.5202; -0.0930
-London; Victoria Palace Theatre; Theater; 2.0; 51.4964; -0.1428
+London; Sky Garden; Landmark; 1.0; 51.5115; -0.0836
+London; Cutty Sark; Historical Site; 1.5; 51.4836; -0.0095
+London; Shakespeare's Globe Theatre; Theater; 1.0; 51.5081; -0.0972
+London; Lyceum Theatre; Theater; 1.0; 51.5113; -0.1194
+London; The Globe Theatre; Theater; 1.0; 51.5081; -0.0972
+London; Barbican Centre; Theater; 1.0; 51.5202; -0.0930
+London; Victoria Palace Theatre; Theater; 1.0; 51.4964; -0.1428
 London; Wembley Stadium; Sports Venue; 2.5; 51.5560; -0.2795
 London; The O2 Arena; Sports Venue; 2.5; 51.5030; 0.0032
 London; Twickenham Stadium; Sports Venue; 2.5; 51.4561; -0.3412
 London; Emirates Stadium; Sports Venue; 2.0; 51.5550; -0.1086
 London; Lord’s Cricket Ground; Sports Venue; 2.0; 51.5294; -0.1736
-London; Natural History Museum Ice Rink; Sports Venue; 2.0; 51.4967; -0.1764
 London; Wimbledon Tennis Museum; Sports Venue; 1.5; 51.4345; -0.2140
 London; London Zoo; Zoo; 2.5; 51.5353; -0.1536
+London; Battersea Park Children's Zoo; Zoo; 1.5; 51.4816; -0.1556
 
 Berlin; Brandenburg Gate; Historical Site; 2.5; 52.5163; 13.3777
 Berlin; Reichstag Building; Historical Site; 2.5; 52.5186; 13.3762

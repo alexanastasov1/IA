@@ -121,24 +121,25 @@ public class CreatedDayPlan {
 
     // Displays the planned route
     private void displayRoute(List<Attraction> route) {
-        System.out.println("Planned route:");
-
-        // Base Google Maps URL
-        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
-
-        for (int i = 0; i < route.size(); i++) {
-            Attraction a = route.get(i);
-            System.out.println(a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
-
-            // First location should be latitude and longitude, others should be place names
-            if (i == 0) {
-                googleMapsUrl.append(a.latitude).append(",").append(a.longitude);
-            } else {
-                googleMapsUrl.append("/").append(a.name.replace(" ", "+"));
-            }
+        if (route.isEmpty()) {
+            System.out.println("No attractions available for the route.");
+            return;
         }
 
-        System.out.println("Google Maps Route: " + googleMapsUrl.toString());
+        System.out.println("Planned route:");
+        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+        googleMapsUrl.append(latitude).append(",").append(longitude);
+
+        for (Attraction a : route) {
+            System.out.println(a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
+            googleMapsUrl.append("/").append(encodeForUrl(a.name));
+        }
+
+        System.out.println("Google Maps Route: " + googleMapsUrl);
+    }
+
+    private String encodeForUrl(String name) {
+        return name.replace(" ", "+").replace("&", "and").replace(",", "");
     }
 
     //Attraction
