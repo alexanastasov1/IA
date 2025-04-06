@@ -53,7 +53,6 @@ London; Westfield London; Shopping; 2.0; 51.5078; -0.2195
 London; Covent Garden Market; Shopping; 2.0; 51.5129; -0.1221
 London; Sky Garden; Landmark; 1.0; 51.5115; -0.0836
 London; Cutty Sark; Historical Site; 1.5; 51.4836; -0.0095
-London; Shakespeare's Globe Theatre; Theater; 1.0; 51.5081; -0.0972
 London; Lyceum Theatre; Theater; 1.0; 51.5113; -0.1194
 London; The Globe Theatre; Theater; 1.0; 51.5081; -0.0972
 London; Barbican Centre; Theater; 1.0; 51.5202; -0.0930

@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 public class CreatedDayPlan {
@@ -139,7 +140,13 @@ public class CreatedDayPlan {
     }
 
     private String encodeForUrl(String name) {
-        return name.replace(" ", "+").replace("&", "and").replace(",", "");
+        try {
+            // Encode using UTF-8 which is standard for URLs
+            return URLEncoder.encode(name, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // Fallback: replace spaces with + if encoding fails
+            return name.replace(" ", "+");
+        }
     }
 
     //Attraction
