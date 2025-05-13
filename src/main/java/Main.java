@@ -14,6 +14,7 @@ public class Main {
     public static void main(String[] args) {
         //Bring up main menu on start
         Menu mainMenu = new Menu();
+        GUI gui = new GUI();
 
         //User to press a button
         int choice = mainMenu.display();
