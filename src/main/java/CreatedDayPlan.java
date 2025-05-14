@@ -52,14 +52,14 @@ public class CreatedDayPlan {
 
     private List<Attraction> filterByCity(List<Attraction> attractions) {
         List<Attraction> filtered = new ArrayList<>();
-        for (Attraction a : attractions) {
+        for (int i = 0; i < attractions.size(); i++) {
+            Attraction a = attractions.get(i);
             if (a.city.equalsIgnoreCase(cityName)) {
                 filtered.add(a);
             }
         }
         return filtered;
     }
-
 
     // Plans the route by selecting the closest attraction within the given time limit
     private List<Attraction> planRoute(List<Attraction> attractions) {
@@ -75,7 +75,8 @@ public class CreatedDayPlan {
             double minPreferredDist = Double.MAX_VALUE;
             double minFallbackDist = Double.MAX_VALUE;
 
-            for (Attraction a : attractions) {
+            for (int i = 0; i < attractions.size(); i++) {
+                Attraction a = attractions.get(i);
                 if (visited.contains(a.name)) continue;
 
                 double distance = haversine(currentLat, currentLon, a.latitude, a.longitude);
@@ -93,7 +94,21 @@ public class CreatedDayPlan {
                 }
             }
 
-            Attraction next = (bestPreferred != null) ? bestPreferred : bestFallback;
+            //Debugging
+            /* System.out.println("\n--- Iteration ---");
+            System.out.println("Current location: " + currentLat + ", " + currentLon);
+            System.out.println("Total time used: " + totalTime);
+
+            if (bestPreferred != null) {
+                System.out.println("Best preferred: " + bestPreferred.name + " (" + bestPreferred.type + "), Distance: " + minPreferredDist);
+            } else {
+                System.out.println("No preferred attractions within 1 km.");
+            }
+            System.out.println("Best fallback: " + bestFallback.name + " (" + bestFallback.type + "), Distance: " + minFallbackDist);
+            */
+
+            // Ensure bestPreferred is not null
+            Attraction next = (bestPreferred != null && minPreferredDist <= 1.0) ? bestPreferred : bestFallback;
 
             // End if there's no option or not enough time
             if (next == null || totalTime + next.timeAdvised > timeSpan + 0.5) break;
@@ -108,10 +123,9 @@ public class CreatedDayPlan {
         return route;
     }
 
-
-
+    //Not needed anymore
     // Finds the closest attraction that hasn't been visited yet
-    private Attraction findClosestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
+    /* private Attraction findClosestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
         Attraction closest = null;
         double minDistance = Double.MAX_VALUE;
 
@@ -157,8 +171,7 @@ public class CreatedDayPlan {
         } else {
             return bestFallback;
         }
-    }
-
+    } */
 
     // Uses the Haversine formula to calculate the distance between two coordinates
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
