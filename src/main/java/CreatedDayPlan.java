@@ -9,6 +9,7 @@ public class CreatedDayPlan {
     private double longitude;
     private double timeSpan;
     private String attractionType;
+    private String restaurantFile = "Restaurants.txt";
 
     public CreatedDayPlan(String cityName, double start_endlatitude, double start_endlongitude, double timeSpan, String attractionType) {
         this.cityName = cityName;
@@ -50,6 +51,31 @@ public class CreatedDayPlan {
         return attractions;
     }
 
+    // Loads vegan restaurants from Restaurants.txt ands stores it in a list
+    private List<Restaurant> loadRestaurants() {
+        List<Restaurant> restaurants = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(restaurantFile))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] data = line.split("; ");
+                if (data.length == 6) {
+                    String city = data[0];
+                    String name = data[1];
+                    String type = data[2];
+                    double timeAdvised = Double.parseDouble(data[3]);
+                    double latitude = Double.parseDouble(data[4]);
+                    double longitude = Double.parseDouble(data[5]);
+
+                    restaurants.add(new Restaurant(city, name, type, timeAdvised, latitude, longitude));
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return restaurants;
+    }
+
+    //Filter database for selected city
     private List<Attraction> filterByCity(List<Attraction> attractions) {
         List<Attraction> filtered = new ArrayList<>();
         for (int i = 0; i < attractions.size(); i++) {
@@ -123,56 +149,6 @@ public class CreatedDayPlan {
         return route;
     }
 
-    //Not needed anymore
-    // Finds the closest attraction that hasn't been visited yet
-    /* private Attraction findClosestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
-        Attraction closest = null;
-        double minDistance = Double.MAX_VALUE;
-
-        for (int i = 0; i < attractions.size(); i++) {
-            Attraction a = attractions.get(i);
-            if (!visited.contains(a.name)) { // Check if attraction has already been visited
-                double distance = haversine(lat, lon, a.latitude, a.longitude);
-                if (distance < minDistance) { // Update the closest attraction if distance is shorter
-                    minDistance = distance;
-                    closest = a;
-                }
-            }
-        }
-        return closest;
-    }
-
-    private Attraction findBestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
-        Attraction bestPreferred = null;
-        Attraction bestFallback = null;
-        double minPreferredDistance = Double.MAX_VALUE;
-        double minFallbackDistance = Double.MAX_VALUE;
-
-        for (Attraction a : attractions) {
-            if (visited.contains(a.name)) continue;
-
-            double distance = haversine(lat, lon, a.latitude, a.longitude);
-
-            if (a.type.equals(attractionType)) {
-                if (distance < minPreferredDistance) {
-                    minPreferredDistance = distance;
-                    bestPreferred = a;
-                }
-            }
-
-            if (distance < minFallbackDistance) {
-                minFallbackDistance = distance;
-                bestFallback = a;
-            }
-        }
-
-        if (bestPreferred != null && minPreferredDistance <= 1.0) {
-            return bestPreferred;
-        } else {
-            return bestFallback;
-        }
-    } */
-
     // Uses the Haversine formula to calculate the distance between two coordinates
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
         final int R = 6371; // Earth's radius in km
@@ -192,16 +168,38 @@ public class CreatedDayPlan {
             return;
         }
 
+        List<Restaurant> allRestaurants = loadRestaurants();
         System.out.println("Planned route:");
         StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
         googleMapsUrl.append(latitude).append(",").append(longitude);
 
         for (Attraction a : route) {
-            System.out.println(a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
+            System.out.println("\n" + a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
+
+            // Find nearby vegan places
+            List<Restaurant> nearby = new ArrayList<>();
+            for (Restaurant r : allRestaurants) {
+                if (r.city.equalsIgnoreCase(cityName)) {
+                    double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
+                    if (dist <= 1.0) {
+                        nearby.add(r);
+                    }
+                }
+            }
+
+            if (!nearby.isEmpty()) {
+                System.out.println("Nearby vegan options (within 1 km):");
+                for (Restaurant r : nearby) {
+                    System.out.println("  - " + r.name + " (" + r.type + ")");
+                }
+            } else {
+                System.out.println("  No vegan restaurants or cafés nearby.");
+            }
+
             googleMapsUrl.append("/").append(encodeForUrl(a.name));
         }
 
-        System.out.println("Google Maps Route: " + googleMapsUrl);
+        System.out.println("\nGoogle Maps Route: " + googleMapsUrl);
     }
 
     private String encodeForUrl(String name) {
@@ -214,7 +212,7 @@ public class CreatedDayPlan {
         }
     }
 
-    //Attraction
+    //Attractions
     private static class Attraction {
         String city;
         String name;
@@ -224,6 +222,25 @@ public class CreatedDayPlan {
         double longitude;
 
         Attraction(String city, String name, String type, double timeAdvised, double latitude, double longitude) {
+            this.city = city;
+            this.name = name;
+            this.type = type;
+            this.timeAdvised = timeAdvised;
+            this.latitude = latitude;
+            this.longitude = longitude;
+        }
+    }
+
+    //Restaurants/cafes
+    private static class Restaurant {
+        String city;
+        String name;
+        String type;
+        double timeAdvised;
+        double latitude;
+        double longitude;
+
+        Restaurant(String city, String name, String type, double timeAdvised, double latitude, double longitude) {
             this.city = city;
             this.name = name;
             this.type = type;
