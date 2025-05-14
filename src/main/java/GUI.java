@@ -8,12 +8,9 @@ public class GUI extends JFrame implements ActionListener {
     private JButton buttonOK;
     private JComboBox dropList;
 
-    // private final int WIDGET_HEIGHT = 30; use constants for easier rearranging
-
-
     public GUI() {
         setTitle("Window title");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when we close the window
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when window closed
         setSize(600, 400);
         setLayout(null);
         labelOutput = new JLabel("Hello World");

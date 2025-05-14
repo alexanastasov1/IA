@@ -20,10 +20,10 @@ public class CreatedDayPlan {
 
     // Main method to create the day plan route
     public void create() {
-        List<Attraction> attractions = loadDatabase(); // Load all attractions from file
-        List<Attraction> filteredAttractions = filterAttractions(attractions); // Filter based on city and type
-        List<Attraction> route = planRoute(filteredAttractions); // Generate optimized route
-        displayRoute(route); // Display the final route
+        List<Attraction> allAttractions = loadDatabase(); // Load all attractions
+        List<Attraction> cityAttractions = filterByCity(allAttractions); // Only filter by city
+        List<Attraction> route = planRoute(cityAttractions); // Generate optimized route
+        displayRoute(route); // Display final route
     }
 
     // Loads the attraction data from the file and stores it in a list
@@ -50,45 +50,65 @@ public class CreatedDayPlan {
         return attractions;
     }
 
-    // Filters attractions based on the selected city and attraction type
-    private List<Attraction> filterAttractions(List<Attraction> attractions) {
+    private List<Attraction> filterByCity(List<Attraction> attractions) {
         List<Attraction> filtered = new ArrayList<>();
-        for (int i = 0; i < attractions.size(); i++) {
-            Attraction a = attractions.get(i);
-            if (a.city.equals(cityName) && a.type.equals(attractionType)) {
+        for (Attraction a : attractions) {
+            if (a.city.equalsIgnoreCase(cityName)) {
                 filtered.add(a);
             }
         }
         return filtered;
     }
 
+
     // Plans the route by selecting the closest attraction within the given time limit
     private List<Attraction> planRoute(List<Attraction> attractions) {
         List<Attraction> route = new ArrayList<>();
-        Set<String> visited = new HashSet<>(); // To keep track of visited attractions
-        double totalTime = 0; // Total time spent visiting attractions
+        Set<String> visited = new HashSet<>();
+        double totalTime = 0;
         double currentLat = latitude;
         double currentLon = longitude;
 
-        while (!attractions.isEmpty()) {
-            Attraction closest = findClosestAttraction(attractions, currentLat, currentLon, visited);
-            if (closest == null || totalTime + closest.timeAdvised > timeSpan + 0.5) break; // Stop if time exceeds limit
+        while (totalTime <= timeSpan + 0.5) {
+            Attraction bestPreferred = null;
+            Attraction bestFallback = null;
+            double minPreferredDist = Double.MAX_VALUE;
+            double minFallbackDist = Double.MAX_VALUE;
 
-            route.add(closest); // Add to route
-            visited.add(closest.name); // Mark as visited
-            totalTime += closest.timeAdvised; // Update total time used
-            currentLat = closest.latitude; // Update current location
-            currentLon = closest.longitude;
+            for (Attraction a : attractions) {
+                if (visited.contains(a.name)) continue;
 
-            for (int i = 0; i < attractions.size(); i++) {
-                if (attractions.get(i).name.equals(closest.name)) {
-                    attractions.remove(i);
-                    break;
+                double distance = haversine(currentLat, currentLon, a.latitude, a.longitude);
+
+                // If it's the preferred type and within 1km
+                if (a.type.equalsIgnoreCase(attractionType) && distance <= 1.0 && distance < minPreferredDist) {
+                    bestPreferred = a;
+                    minPreferredDist = distance;
+                }
+
+                // Always track the closest of any type as fallback
+                if (distance < minFallbackDist) {
+                    bestFallback = a;
+                    minFallbackDist = distance;
                 }
             }
+
+            Attraction next = (bestPreferred != null) ? bestPreferred : bestFallback;
+
+            // End if there's no option or not enough time
+            if (next == null || totalTime + next.timeAdvised > timeSpan + 0.5) break;
+
+            route.add(next);
+            visited.add(next.name);
+            totalTime += next.timeAdvised;
+            currentLat = next.latitude;
+            currentLon = next.longitude;
         }
+
         return route;
     }
+
+
 
     // Finds the closest attraction that hasn't been visited yet
     private Attraction findClosestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
@@ -107,6 +127,38 @@ public class CreatedDayPlan {
         }
         return closest;
     }
+
+    private Attraction findBestAttraction(List<Attraction> attractions, double lat, double lon, Set<String> visited) {
+        Attraction bestPreferred = null;
+        Attraction bestFallback = null;
+        double minPreferredDistance = Double.MAX_VALUE;
+        double minFallbackDistance = Double.MAX_VALUE;
+
+        for (Attraction a : attractions) {
+            if (visited.contains(a.name)) continue;
+
+            double distance = haversine(lat, lon, a.latitude, a.longitude);
+
+            if (a.type.equals(attractionType)) {
+                if (distance < minPreferredDistance) {
+                    minPreferredDistance = distance;
+                    bestPreferred = a;
+                }
+            }
+
+            if (distance < minFallbackDistance) {
+                minFallbackDistance = distance;
+                bestFallback = a;
+            }
+        }
+
+        if (bestPreferred != null && minPreferredDistance <= 1.0) {
+            return bestPreferred;
+        } else {
+            return bestFallback;
+        }
+    }
+
 
     // Uses the Haversine formula to calculate the distance between two coordinates
     private double haversine(double lat1, double lon1, double lat2, double lon2) {

@@ -1,0 +1,15 @@
+London; Mallow; Vegan Restaurant; 2.0; 51.5081; -0.0918
+London; 123V; Vegan Restaurant; 1.5; 51.5145; -0.1467
+London; Unity Diner; Vegan Restaurant; 2.0; 51.5177; -0.0755
+London; The Gallery Café; Vegan Café; 1.5; 51.5297; -0.0633
+London; Dauns; Vegan Café; 1.5; 51.5171; -0.1405
+London; We Are Vegan Everything; Vegan Café; 1.5; 51.5297; -0.0633
+London; Beaten by a Whisker; Vegan Café; 1.0; 51.5297; -0.0633
+London; The Fields Beneath; Vegan Café; 1.5; 51.5438; -0.1423
+London; Plates; Vegan Restaurant; 2.5; 51.5260; -0.0877
+London; Mildreds Soho; Vegan Restaurant; 2.0; 51.5145; -0.1321
+London; Facing Heaven; Vegan Restaurant; 2.0; 51.5453; -0.0550
+London; Tofu Vegan; Vegan Restaurant; 2.0; 51.5470; -0.1042
+London; Jam Delish; Vegan Restaurant; 2.0; 51.5485; -0.1024
+London; Holy Carrot; Vegan Restaurant; 2.0; 51.5135; -0.1937
+London; Thenga Café; Vegan Café; 1.5; 51.5330; -0.1220
