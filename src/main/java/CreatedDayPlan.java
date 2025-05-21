@@ -134,7 +134,12 @@ public class CreatedDayPlan {
             */
 
             // Ensure bestPreferred is not null
-            Attraction next = (bestPreferred != null && minPreferredDist <= 1.0) ? bestPreferred : bestFallback;
+            Attraction next;
+            if (bestPreferred != null && minPreferredDist <= 1.0) {
+                next = bestPreferred;
+            } else {
+                next = bestFallback;
+            }
 
             // End if there's no option or not enough time
             if (next == null || totalTime + next.timeAdvised > timeSpan + 0.5) break;
@@ -145,7 +150,6 @@ public class CreatedDayPlan {
             currentLat = next.latitude;
             currentLon = next.longitude;
         }
-
         return route;
     }
 
@@ -173,12 +177,14 @@ public class CreatedDayPlan {
         StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
         googleMapsUrl.append(latitude).append(",").append(longitude);
 
-        for (Attraction a : route) {
+        for (int i = 0; i < route.size(); i++) {
+            Attraction a = route.get(i);
             System.out.println("\n" + a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
 
             // Find nearby vegan places
             List<Restaurant> nearby = new ArrayList<>();
-            for (Restaurant r : allRestaurants) {
+            for (int j = 0; j < allRestaurants.size(); j++) {
+                Restaurant r = allRestaurants.get(j);
                 if (r.city.equalsIgnoreCase(cityName)) {
                     double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
                     if (dist <= 1.0) {
@@ -189,7 +195,8 @@ public class CreatedDayPlan {
 
             if (!nearby.isEmpty()) {
                 System.out.println("Nearby vegan options (within 1 km):");
-                for (Restaurant r : nearby) {
+                for (int k = 0; k < nearby.size(); k++) {
+                    Restaurant r = nearby.get(k);
                     System.out.println("  - " + r.name + " (" + r.type + ")");
                 }
             } else {
