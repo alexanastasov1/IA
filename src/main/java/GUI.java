@@ -4,36 +4,34 @@ import java.awt.event.ActionListener;
 
 public class GUI extends JFrame implements ActionListener {
     private JLabel labelOutput;
-    private JTextField textUsername;
-    private JButton buttonOK;
+    private JButton buttonCNDP;
+    private JButton buttonSDP;
     private JComboBox dropList;
 
     public GUI() {
-        setTitle("Window title");
+        setTitle("Day Trip Planner");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when window closed
         setSize(600, 400);
         setLayout(null);
-        labelOutput = new JLabel("Hello World");
-        labelOutput.setBounds(50,50, 150,30);
+        labelOutput = new JLabel("Day Trip Planner");
+        labelOutput.setBounds(225,50, 150,30);
 
+        /* dropList = new JComboBox<>();
+        dropList.setBounds(50, 200, 150, 50); */
 
-        textUsername = new JTextField();
-        textUsername.setBounds(50, 90, 200, 30);
+        buttonCNDP = new JButton("Create new day plan");
+        buttonCNDP.setBounds(225, 100, 150, 50);
+        buttonCNDP.addActionListener(this);
 
-        dropList = new JComboBox<>();
-        dropList.setBounds(50, 200, 150, 50);
-
-
-        buttonOK = new JButton("OK");
-        buttonOK.setBounds(50, 130, 150, 50);
-        buttonOK.addActionListener(this);
+        buttonSDP = new JButton("Saved day plan(s)");
+        buttonSDP.setBounds(225,175,150,50);
+        buttonSDP.addActionListener(this);
 
         add(labelOutput);
-        add(textUsername);
-        add(buttonOK);
-        add(dropList);
+        add(buttonCNDP);
+        add(buttonSDP);
+        /* add(dropList); */
         setVisible(true);
-
     }
 
     @Override
