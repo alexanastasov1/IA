@@ -11,20 +11,20 @@ public class GUI extends JFrame implements ActionListener {
     public GUI() {
         setTitle("Day Trip Planner");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when window closed
-        setSize(600, 400);
+        setSize(900, 600);
         setLayout(null);
         labelOutput = new JLabel("Day Trip Planner");
-        labelOutput.setBounds(225,50, 150,30);
+        labelOutput.setBounds(375,50, 150,30);
 
         /* dropList = new JComboBox<>();
         dropList.setBounds(50, 200, 150, 50); */
 
         buttonCNDP = new JButton("Create new day plan");
-        buttonCNDP.setBounds(225, 100, 150, 50);
+        buttonCNDP.setBounds(375, 100, 150, 50);
         buttonCNDP.addActionListener(this);
 
         buttonSDP = new JButton("Saved day plan(s)");
-        buttonSDP.setBounds(225,175,150,50);
+        buttonSDP.setBounds(375,175,150,50);
         buttonSDP.addActionListener(this);
 
         add(labelOutput);
