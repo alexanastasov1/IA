@@ -36,6 +36,10 @@ public class GUI extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        if (e.getSource() == buttonCNDP) {
+            new CreateNewDayPlanGUI();  // Opens window for creating new day plan
+        } else if (e.getSource() == buttonSDP) {
+            new SavedDayPlansGUI();  // Opens window for saved day plans
+        }
     }
 }
