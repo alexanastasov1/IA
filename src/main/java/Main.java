@@ -17,7 +17,7 @@ public class Main {
         GUI gui = new GUI();
 
         //User to press a button
-        int choice = mainMenu.display();
+        /* int choice = mainMenu.display();
         while (choice != 3) {
             if (choice == 1){ //Open CreateNewDayPlan menu if button pressed
                 CreateNewDayPlan createNewDayPlanMenu = new CreateNewDayPlan();
@@ -44,6 +44,6 @@ public class Main {
             System.out.println(results[0].formattedAddress);
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        } */
     }
 }

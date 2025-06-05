@@ -13,6 +13,7 @@ public class GUI extends JFrame implements ActionListener {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when window closed
         setSize(900, 600);
         setLayout(null);
+        setResizable(false);
         labelOutput = new JLabel("Day Trip Planner");
         labelOutput.setBounds(375,50, 150,30);
 
@@ -37,7 +38,7 @@ public class GUI extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonCNDP) {
-            new CreateNewDayPlanGUI();  // Opens window for creating new day plan
+            new CreateNewDayPlan();  // Opens window for creating new day plan
         } else if (e.getSource() == buttonSDP) {
             new SavedDayPlansGUI();  // Opens window for saved day plans
         }

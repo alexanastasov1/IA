@@ -1,10 +1,9 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import javax.swing.*;
+import java.awt.event.*;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
-public class CreateNewDayPlan {
+public class CreateNewDayPlan extends JFrame {
     private String fileName = "Database.txt";
     private String cityName;
     private double latitude;
@@ -13,149 +12,101 @@ public class CreateNewDayPlan {
     private String attractionType;
     private ArrayList<String> attractions = new ArrayList<>();
 
-    // Constructor to load the attractions database from file
-    public CreateNewDayPlan() {
-        try {
-            FileReader fr = new FileReader(fileName);
-            BufferedReader br = new BufferedReader(fr);
-            String line = br.readLine();
+    // GUI components
+    private JTextField cityField, latField, lonField, timeField;
+    private JComboBox<String> typeBox;
+    private JButton createButton;
 
-            // Read all lines from the file and store them in the attractions list
-            while (line != null) {
+    public CreateNewDayPlan() {
+        loadAttractions();
+        initGUI();
+    }
+
+    private void loadAttractions() {
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
                 attractions.add(line);
-                line = br.readLine();
             }
-            br.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    // Validates the city name input by the user
-    public boolean cityValidation() {
-        Scanner input = new Scanner(System.in);
+    private void initGUI() {
+        setTitle("Create New Day Plan");
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setSize(900, 600);
+        setLayout(null);
+        setResizable(false);
 
-        if (attractions.isEmpty()) {
-            System.out.println("Error: No cities found in the database.");
-            return false;
-        }
+        add(new JLabel("City:")).setBounds(300, 50, 100, 30);
+        cityField = new JTextField();
+        cityField.setBounds(420, 50, 200, 30);
+        add(cityField);
 
-        while (true) {
-            System.out.print("Enter city name: ");
-            String choice = input.nextLine();
+        add(new JLabel("Latitude:")).setBounds(300, 100, 100, 30);
+        latField = new JTextField();
+        latField.setBounds(420, 100, 200, 30);
+        add(latField);
 
-            // Iterate through the stored attractions to find a matching city
-            for (int i = 0; i < attractions.size(); i++) {
-                String attraction = attractions.get(i);
+        add(new JLabel("Longitude:")).setBounds(300, 150, 100, 30);
+        lonField = new JTextField();
+        lonField.setBounds(420, 150, 200, 30);
+        add(lonField);
 
-                if (attraction != null && !attraction.isBlank()) { // Avoid null/blank entries
-                    String city = attraction.split(";")[0].trim(); // Extract city name
-                    if (city.equalsIgnoreCase(choice)) { // Case-insensitive match
-                        System.out.println(city + " is in database.");
-                        this.cityName = city;
-                        return true; // Valid city found
-                    }
-                }
-            }
-            System.out.println("City not in database. Please try again.");
-        }
+        add(new JLabel("Time (hrs):")).setBounds(300, 200, 100, 30);
+        timeField = new JTextField();
+        timeField.setBounds(420, 200, 200, 30);
+        add(timeField);
+
+        add(new JLabel("Attraction Type:")).setBounds(300, 250, 150, 30);
+        String[] types = { "Museum", "Historical Site", "Park", "Gallery", "Landmark",
+                "Theme Park", "Zoo", "Theater", "Shopping", "Sports Venue" };
+        typeBox = new JComboBox<>(types);
+        typeBox.setBounds(420, 250, 200, 30);
+        add(typeBox);
+
+        createButton = new JButton("Create Plan");
+        createButton.setBounds(375, 320, 150, 40);
+        add(createButton);
+
+        createButton.addActionListener(e -> handleCreate());
+
+        setVisible(true);
     }
 
-    // Sets the start and end point by allowing the user to input coordinates
-    public void setStart_endPoint() {
-        if (cityName == null || cityName.isEmpty()) {
-            System.out.println("Error: City not set. Please validate a city first.");
+    private void handleCreate() {
+        String cityInput = cityField.getText().trim();
+        if (!validateCity(cityInput)) {
+            JOptionPane.showMessageDialog(this, "City not in database.");
             return;
         }
-
-        // Generate Google Maps search URL for the selected city
-        String googleMapsUrl = "https://www.google.com/maps/search/?api=1&query=" + cityName.replace(" ", "+");
-        System.out.println("Open the following link and right-click to select your start and end point on the map:");
-        System.out.println(googleMapsUrl);
-
-        Scanner input = new Scanner(System.in);
-
-        // Prompt user for latitude and longitude
-        while (true) {
-            try {
-                System.out.print("Enter the latitude and longitude of the selected point: ");
-                String userInput = input.nextLine().trim();
-
-                // Split input by comma or space
-                String[] coordinates = userInput.split("[,\\s]+");
-
-                if (coordinates.length == 2) {
-                    latitude = Double.parseDouble(coordinates[0]);
-                    longitude = Double.parseDouble(coordinates[1]);
-
-                    // Validate latitude and longitude ranges
-                    if (latitude >= -90 && latitude <= 90 && longitude >= -180 && longitude <= 180) {
-                        break;
-                    } else {
-                        System.out.println("Invalid coordinates. Latitude must be between -90 and 90, and longitude between -180 and 180.");
-                    }
-                } else {
-                    System.out.println("Invalid format. Please enter the coordinates in the format: latitude, longitude.");
-                }
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter numeric values.");
+        try {
+            latitude = Double.parseDouble(latField.getText().trim());
+            longitude = Double.parseDouble(lonField.getText().trim());
+            timeSpan = Double.parseDouble(timeField.getText().trim());
+            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || timeSpan <= 0 || timeSpan > 24) {
+                throw new NumberFormatException();
             }
-        }
+            attractionType = (String) typeBox.getSelectedItem();
+            cityName = cityInput;
 
-        // Display the set coordinates
-        System.out.println("Start/end point set at: Latitude " + latitude + ", Longitude " + longitude);
-    }
-
-    // Allows the user to select their preferred attraction type
-    public String favouredAttractionType() {
-        Scanner input = new Scanner(System.in);
-        String[] attractionTypes = {
-                "Museum", "Historical Site", "Park", "Gallery", "Landmark",
-                "Theme Park", "Zoo", "Theater", "Shopping", "Sports Venue"
-        };
-
-        System.out.println("Choose your preferred attraction type:");
-        for (int i = 0; i < attractionTypes.length; i++) {
-            System.out.println((i + 1) + ". " + attractionTypes[i]);
-        }
-
-        while (true) {
-            System.out.print("Enter the number corresponding to your choice: ");
-            if (input.hasNextInt()) {
-                int choice = input.nextInt();
-                if (choice >= 1 && choice <= attractionTypes.length) {
-                    attractionType = attractionTypes[choice - 1]; // Store chosen attraction type
-                    System.out.println("Preferred attraction type set as: " + attractionType);
-                    return attractionType;
-                }
-            }
-            System.out.println("Invalid choice. Please enter a valid number.");
-            input.nextLine(); // Clear invalid input
+            CreatedDayPlan plan = new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
+            JOptionPane.showMessageDialog(this, "Plan created successfully!");
+            // Optionally: dispose(); or hand off to next screen
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Invalid input: please enter valid numbers.");
         }
     }
 
-    // Gets the time span the user wants to spend on the plan
-    public double getTimeSpan() {
-        Scanner input = new Scanner(System.in);
-
-        while (true) {
-            System.out.print("Enter the number of hours you plan to spend (e.g., 3.5): ");
-
-            if (input.hasNextDouble()) {
-                double time = input.nextDouble();
-                if (time > 0 && time <= 24) {
-                    timeSpan = time;
-                    return timeSpan;
-                }
+    private boolean validateCity(String inputCity) {
+        for (String entry : attractions) {
+            if (entry != null && !entry.isBlank()) {
+                String city = entry.split(";")[0].trim();
+                if (city.equalsIgnoreCase(inputCity)) return true;
             }
-            input.nextLine(); // Clear invalid input
-            System.out.println("Invalid input. Please enter a valid number.");
         }
-    }
-
-    // Creates a new day plan based on user input
-    public CreatedDayPlan create() {
-        System.out.println("Day plan successfully created!");
-        return new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
+        return false;
     }
 }
