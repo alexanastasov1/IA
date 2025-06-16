@@ -93,6 +93,7 @@ public class CreateNewDayPlan extends JFrame {
             cityName = cityInput;
 
             CreatedDayPlan plan = new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
+            plan.create();
             JOptionPane.showMessageDialog(this, "Plan created successfully!");
             // Optionally: dispose(); or hand off to next screen
         } catch (NumberFormatException ex) {

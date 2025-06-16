@@ -1,8 +1,9 @@
+import javax.swing.*;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
 
-public class CreatedDayPlan {
+public class CreatedDayPlan extends JFrame {
     private String fileName = "Database.txt";
     private String cityName;
     private double latitude;
