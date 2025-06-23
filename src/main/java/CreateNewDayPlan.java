@@ -45,12 +45,12 @@ public class CreateNewDayPlan extends JFrame {
         cityField.setBounds(420, 50, 200, 30);
         add(cityField);
 
-        add(new JLabel("Latitude:")).setBounds(300, 100, 100, 30);
+        add(new JLabel("Start Latitude:")).setBounds(300, 100, 100, 30);
         latField = new JTextField();
         latField.setBounds(420, 100, 200, 30);
         add(latField);
 
-        add(new JLabel("Longitude:")).setBounds(300, 150, 100, 30);
+        add(new JLabel("Start Longitude:")).setBounds(300, 150, 100, 30);
         lonField = new JTextField();
         lonField.setBounds(420, 150, 200, 30);
         add(lonField);
