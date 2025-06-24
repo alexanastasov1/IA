@@ -168,46 +168,57 @@ public class CreatedDayPlan extends JFrame {
 
     // Displays the planned route
     private void displayRoute(List<Attraction> route) {
+        JTextArea outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+
+        StringBuilder output = new StringBuilder();
+
         if (route.isEmpty()) {
-            System.out.println("No attractions available for the route.");
-            return;
-        }
+            output.append("No attractions available for the route.\n");
+        } else {
+            List<Restaurant> allRestaurants = loadRestaurants();
+            output.append("Planned route:\n");
+            StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+            googleMapsUrl.append(latitude).append(",").append(longitude);
 
-        List<Restaurant> allRestaurants = loadRestaurants();
-        System.out.println("Planned route:");
-        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
-        googleMapsUrl.append(latitude).append(",").append(longitude);
+            for (Attraction a : route) {
+                output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
+                        .append(a.timeAdvised).append(" hours\n");
 
-        for (int i = 0; i < route.size(); i++) {
-            Attraction a = route.get(i);
-            System.out.println("\n" + a.name + " (" + a.type + ") - Time: " + a.timeAdvised + " hours");
-
-            // Find nearby vegan places
-            List<Restaurant> nearby = new ArrayList<>();
-            for (int j = 0; j < allRestaurants.size(); j++) {
-                Restaurant r = allRestaurants.get(j);
-                if (r.city.equalsIgnoreCase(cityName)) {
-                    double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
-                    if (dist <= 1.0) {
-                        nearby.add(r);
+                // Nearby vegan options
+                List<Restaurant> nearby = new ArrayList<>();
+                for (Restaurant r : allRestaurants) {
+                    if (r.city.equalsIgnoreCase(cityName)) {
+                        double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
+                        if (dist <= 1.0) {
+                            nearby.add(r);
+                        }
                     }
                 }
-            }
 
-            if (!nearby.isEmpty()) {
-                System.out.println("Nearby vegan options (within 1 km):");
-                for (int k = 0; k < nearby.size(); k++) {
-                    Restaurant r = nearby.get(k);
-                    System.out.println("  - " + r.name + " (" + r.type + ")");
+                if (!nearby.isEmpty()) {
+                    output.append("Nearby vegan options (within 1 km):\n");
+                    for (Restaurant r : nearby) {
+                        output.append("  - ").append(r.name).append(" (").append(r.type).append(")\n");
+                    }
+                } else {
+                    output.append("  No vegan restaurants or cafés nearby.\n");
                 }
-            } else {
-                System.out.println("  No vegan restaurants or cafés nearby.");
+
+                googleMapsUrl.append("/").append(encodeForUrl(a.name));
             }
 
-            googleMapsUrl.append("/").append(encodeForUrl(a.name));
+            output.append("\nGoogle Maps Route: ").append(googleMapsUrl).append("\n");
         }
 
-        System.out.println("\nGoogle Maps Route: " + googleMapsUrl);
+        outputArea.setText(output.toString());
+
+        setTitle("Created Day Plan for " + cityName);
+        setSize(600, 500);
+        add(scrollPane);
+        setLocationRelativeTo(null); // Center on screen
+        setVisible(true);
     }
 
     private String encodeForUrl(String name) {

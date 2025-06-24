@@ -71,7 +71,24 @@ public class CreateNewDayPlan extends JFrame {
         createButton.setBounds(375, 320, 150, 40);
         add(createButton);
 
-        createButton.addActionListener(e -> handleCreate());
+        createButton.addActionListener(e -> {
+            try {
+                String city = cityField.getText();
+                double lat = Double.parseDouble(latField.getText());
+                double lon = Double.parseDouble(lonField.getText());
+                double time = Double.parseDouble(timeField.getText());
+                String type = (String) typeBox.getSelectedItem();
+
+                CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
+                plan.create(); // This now launches the GUI with the route
+
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Please enter valid numbers for latitude, longitude, and time.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "An unexpected error occurred:\n" + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
+        });
 
         setVisible(true);
     }
