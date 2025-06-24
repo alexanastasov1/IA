@@ -251,8 +251,6 @@ public class CreatedDayPlan extends JFrame {
         frame.setVisible(true);
     }
 
-
-
     private String encodeForUrl(String name) {
         try {
             // Encode using UTF-8 which is standard for URLs
@@ -301,5 +299,3 @@ public class CreatedDayPlan extends JFrame {
         }
     }
 }
-
-
