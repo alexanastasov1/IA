@@ -1,7 +1,9 @@
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.*;
+import java.util.List;
 
 public class CreatedDayPlan extends JFrame {
     private String fileName = "Database.txt";
@@ -168,19 +170,31 @@ public class CreatedDayPlan extends JFrame {
 
     // Displays the planned route
     private void displayRoute(List<Attraction> route) {
+        JFrame frame = new JFrame("Created Day Plan for " + cityName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(900, 600);
+        frame.setLayout(null);
+        frame.setResizable(false);
+
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
-        JScrollPane scrollPane = new JScrollPane(outputArea);
+        outputArea.setLineWrap(true);
+        outputArea.setWrapStyleWord(true);
 
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        scrollPane.setBounds(50, 30, 800, 400);
+        frame.add(scrollPane);
+
+        // Route building
         StringBuilder output = new StringBuilder();
+        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+        googleMapsUrl.append(latitude).append(",").append(longitude);
 
         if (route.isEmpty()) {
             output.append("No attractions available for the route.\n");
         } else {
             List<Restaurant> allRestaurants = loadRestaurants();
             output.append("Planned route:\n");
-            StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
-            googleMapsUrl.append(latitude).append(",").append(longitude);
 
             for (Attraction a : route) {
                 output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
@@ -208,18 +222,36 @@ public class CreatedDayPlan extends JFrame {
 
                 googleMapsUrl.append("/").append(encodeForUrl(a.name));
             }
-
-            output.append("\nGoogle Maps Route: ").append(googleMapsUrl).append("\n");
         }
 
         outputArea.setText(output.toString());
 
-        setTitle("Created Day Plan for " + cityName);
-        setSize(600, 500);
-        add(scrollPane);
-        setLocationRelativeTo(null); // Center on screen
-        setVisible(true);
+        // Styled hyperlink area
+        String html = "<html><body style='font-family:sans-serif; font-size:12pt;'>" +
+                "<b>Google Maps Route:</b><br>" +
+                "<a href='" + googleMapsUrl + "'>" + googleMapsUrl + "</a>" +
+                "</body></html>";
+
+        JEditorPane htmlPane = new JEditorPane("text/html", html);
+        htmlPane.setEditable(false);
+        htmlPane.setOpaque(false);
+        htmlPane.setBounds(50, 450, 800, 80);
+        htmlPane.addHyperlinkListener(e -> {
+            if (e.getEventType() == javax.swing.event.HyperlinkEvent.EventType.ACTIVATED) {
+                try {
+                    java.awt.Desktop.getDesktop().browse(e.getURL().toURI());
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+
+        frame.add(htmlPane);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
+
+
 
     private String encodeForUrl(String name) {
         try {
