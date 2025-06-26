@@ -80,7 +80,8 @@ public class CreateNewDayPlan extends JFrame {
                 String type = (String) typeBox.getSelectedItem();
 
                 CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
-                plan.create(); // This now launches the GUI with the route
+                plan.create(); // Launches createdDayPlan GUI
+                dispose();
 
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Please enter valid numbers for latitude, longitude, and time.", "Input Error", JOptionPane.ERROR_MESSAGE);
@@ -91,40 +92,5 @@ public class CreateNewDayPlan extends JFrame {
         });
 
         setVisible(true);
-    }
-
-    private void handleCreate() {
-        String cityInput = cityField.getText().trim();
-        if (!validateCity(cityInput)) {
-            JOptionPane.showMessageDialog(this, "City not in database.");
-            return;
-        }
-        try {
-            latitude = Double.parseDouble(latField.getText().trim());
-            longitude = Double.parseDouble(lonField.getText().trim());
-            timeSpan = Double.parseDouble(timeField.getText().trim());
-            if (latitude < -90 || latitude > 90 || longitude < -180 || longitude > 180 || timeSpan <= 0 || timeSpan > 24) {
-                throw new NumberFormatException();
-            }
-            attractionType = (String) typeBox.getSelectedItem();
-            cityName = cityInput;
-
-            CreatedDayPlan plan = new CreatedDayPlan(cityName, latitude, longitude, timeSpan, attractionType);
-            plan.create();
-            JOptionPane.showMessageDialog(this, "Plan created successfully!");
-            // Optionally: dispose(); or hand off to next screen
-        } catch (NumberFormatException ex) {
-            JOptionPane.showMessageDialog(this, "Invalid input: please enter valid numbers.");
-        }
-    }
-
-    private boolean validateCity(String inputCity) {
-        for (String entry : attractions) {
-            if (entry != null && !entry.isBlank()) {
-                String city = entry.split(";")[0].trim();
-                if (city.equalsIgnoreCase(inputCity)) return true;
-            }
-        }
-        return false;
     }
 }

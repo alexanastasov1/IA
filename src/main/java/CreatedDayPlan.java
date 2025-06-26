@@ -247,7 +247,6 @@ public class CreatedDayPlan extends JFrame {
         });
 
         frame.add(htmlPane);
-        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
