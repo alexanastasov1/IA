@@ -73,14 +73,41 @@ public class CreateNewDayPlan extends JFrame {
 
         createButton.addActionListener(e -> {
             try {
-                String city = cityField.getText();
-                double lat = Double.parseDouble(latField.getText());
-                double lon = Double.parseDouble(lonField.getText());
-                double time = Double.parseDouble(timeField.getText());
+                String city = cityField.getText().trim();
+                if (city.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "City name cannot be empty.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Check if city exists in the database
+                boolean cityExists = false;
+
+                for (String line : attractions) {
+                    String[] parts = line.split(";");
+
+                    if (parts.length >= 1) {
+                        String dbCity = parts[0].trim();
+
+                        if (dbCity.equalsIgnoreCase(city)) {
+                            cityExists = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!cityExists) {
+                    JOptionPane.showMessageDialog(this, "City not found in the database.", "City Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+
+                double lat = Double.parseDouble(latField.getText().trim());
+                double lon = Double.parseDouble(lonField.getText().trim());
+                double time = Double.parseDouble(timeField.getText().trim());
                 String type = (String) typeBox.getSelectedItem();
 
                 CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
-                plan.create(); // Launches createdDayPlan GUI
+                plan.create(); // show result window
                 dispose();
 
             } catch (NumberFormatException ex) {
