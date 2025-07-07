@@ -81,7 +81,6 @@ public class CreateNewDayPlan extends JFrame {
 
                 // Check if city exists in the database
                 boolean cityExists = false;
-
                 for (String line : attractions) {
                     String[] parts = line.split(";");
 
@@ -100,14 +99,13 @@ public class CreateNewDayPlan extends JFrame {
                     return;
                 }
 
-
                 double lat = Double.parseDouble(latField.getText().trim());
                 double lon = Double.parseDouble(lonField.getText().trim());
                 double time = Double.parseDouble(timeField.getText().trim());
                 String type = (String) typeBox.getSelectedItem();
 
                 CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
-                plan.create(); // show result window
+                plan.create();
                 dispose();
 
             } catch (NumberFormatException ex) {
