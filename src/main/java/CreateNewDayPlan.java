@@ -83,14 +83,9 @@ public class CreateNewDayPlan extends JFrame {
                 boolean cityExists = false;
                 for (String line : attractions) {
                     String[] parts = line.split(";");
-
-                    if (parts.length >= 1) {
-                        String dbCity = parts[0].trim();
-
-                        if (dbCity.equalsIgnoreCase(city)) {
-                            cityExists = true;
-                            break;
-                        }
+                    if (parts.length >= 1 && parts[0].trim().equalsIgnoreCase(city)) {
+                        cityExists = true;
+                        break;
                     }
                 }
 
@@ -99,9 +94,27 @@ public class CreateNewDayPlan extends JFrame {
                     return;
                 }
 
+                // Parse and validate latitude
                 double lat = Double.parseDouble(latField.getText().trim());
+                if (lat < -90 || lat > 90) {
+                    JOptionPane.showMessageDialog(this, "Latitude must be between -90 and 90 degrees.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Parse and validate longitude
                 double lon = Double.parseDouble(lonField.getText().trim());
+                if (lon < -180 || lon > 180) {
+                    JOptionPane.showMessageDialog(this, "Longitude must be between -180 and 180 degrees.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Parse and validate time
                 double time = Double.parseDouble(timeField.getText().trim());
+                if (time <= 0 || time > 16) {
+                    JOptionPane.showMessageDialog(this, "Time must be between 0.1 and 16 hours.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
                 String type = (String) typeBox.getSelectedItem();
 
                 CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
