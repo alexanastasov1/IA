@@ -5,11 +5,6 @@ import java.util.ArrayList;
 
 public class CreateNewDayPlan extends JFrame {
     private String fileName = "Database.txt";
-    private String cityName;
-    private double latitude;
-    private double longitude;
-    private double timeSpan;
-    private String attractionType;
     private ArrayList<String> attractions = new ArrayList<>();
 
     // GUI components
