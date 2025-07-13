@@ -1,9 +1,13 @@
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.*;
 import java.util.List;
+import java.awt.Desktop;
+import java.net.URI;
+import java.net.URL;
 
 public class CreatedDayPlan extends JFrame {
     private String fileName = "Database.txt";
@@ -248,6 +252,11 @@ public class CreatedDayPlan extends JFrame {
 
         frame.add(htmlPane);
         frame.setVisible(true);
+        try {
+            Desktop.getDesktop().browse(new URI(googleMapsUrl.toString()));
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
     }
 
     private String encodeForUrl(String name) {
