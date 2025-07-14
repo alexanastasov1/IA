@@ -261,10 +261,9 @@ public class CreatedDayPlan extends JFrame {
 
     private String encodeForUrl(String name) {
         try {
-            // Encode using UTF-8 which is standard for URLs
+            // Encode using UTF-8
             return URLEncoder.encode(name, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            // Fallback: replace spaces with + if encoding fails
             return name.replace(" ", "+");
         }
     }
