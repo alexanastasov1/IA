@@ -181,6 +181,7 @@ public class CreatedDayPlan extends JFrame {
         StringBuilder output = new StringBuilder();
         StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
         googleMapsUrl.append(latitude).append(",").append(longitude);
+        googleMapsUrl.append("/data=!4m2!4m1!3e2"); // set walking mode
 
         if (route.isEmpty()) {
             output.append("No attractions available for the route.\n");
