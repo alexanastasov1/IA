@@ -354,7 +354,7 @@ public class CreatedDayPlan extends JFrame {
             output.append("No attractions available for the route.\n");
         } else {
             List<Restaurant> allRestaurants = loadRestaurants();
-            output.append("Planned route:\n");
+            output.append("PLANNED ROUTE:\n");
 
             for (Attraction a : route) {
                 output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
@@ -385,8 +385,8 @@ public class CreatedDayPlan extends JFrame {
 
         outputArea.setText(output.toString());
 
-        // JavaFX map in a JFXPanel (embedded browser)
-        JFXPanel fxPanel = new JFXPanel(); // JavaFX inside Swing
+        // JavaFX map in a JFXPanel
+        JFXPanel fxPanel = new JFXPanel();
         Platform.runLater(() -> {
             WebView webView = new WebView();
             WebEngine webEngine = webView.getEngine();
@@ -398,7 +398,7 @@ public class CreatedDayPlan extends JFrame {
 
         // JSplitPane for side-by-side layout
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, fxPanel);
-        splitPane.setResizeWeight(0.4); // 40% for left panel, 60% for right
+        splitPane.setResizeWeight(0.22);
         frame.add(splitPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
