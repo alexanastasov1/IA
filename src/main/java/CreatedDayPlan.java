@@ -11,6 +11,7 @@ import java.net.URL;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 public class CreatedDayPlan extends JFrame {
@@ -263,7 +264,7 @@ public class CreatedDayPlan extends JFrame {
         }
     } */
 
-    private void displayRoute(List<Attraction> route) {
+    /* private void displayRoute(List<Attraction> route) {
         JFrame frame = new JFrame("Created Day Plan for " + cityName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(1200, 700);
@@ -328,6 +329,77 @@ public class CreatedDayPlan extends JFrame {
             webView.getEngine().load(googleMapsUrl.toString());
             jfxPanel.setScene(new Scene(webView));
         });
+
+        frame.setVisible(true);
+    } */
+
+    private void displayRoute(List<Attraction> route) {
+        JFrame frame = new JFrame("Created Day Plan for " + cityName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1200, 700);
+        frame.setLayout(new BorderLayout());
+
+        JTextArea outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        outputArea.setLineWrap(true);
+        outputArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+
+        // Route building
+        StringBuilder output = new StringBuilder();
+        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+        googleMapsUrl.append(latitude).append(",").append(longitude);
+
+        if (route.isEmpty()) {
+            output.append("No attractions available for the route.\n");
+        } else {
+            List<Restaurant> allRestaurants = loadRestaurants();
+            output.append("Planned route:\n");
+
+            for (Attraction a : route) {
+                output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
+                        .append(a.timeAdvised).append(" hours\n");
+
+                List<Restaurant> nearby = new ArrayList<>();
+                for (Restaurant r : allRestaurants) {
+                    if (r.city.equalsIgnoreCase(cityName)) {
+                        double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
+                        if (dist <= 1.0) {
+                            nearby.add(r);
+                        }
+                    }
+                }
+
+                if (!nearby.isEmpty()) {
+                    output.append("Nearby vegan options (within 1 km):\n");
+                    for (Restaurant r : nearby) {
+                        output.append("  - ").append(r.name).append(" (").append(r.type).append(")\n");
+                    }
+                } else {
+                    output.append("  No vegan restaurants or cafés nearby.\n");
+                }
+
+                googleMapsUrl.append("/").append(encodeForUrl(a.name));
+            }
+        }
+
+        outputArea.setText(output.toString());
+
+        // JavaFX map in a JFXPanel (embedded browser)
+        JFXPanel fxPanel = new JFXPanel(); // JavaFX inside Swing
+        Platform.runLater(() -> {
+            WebView webView = new WebView();
+            WebEngine webEngine = webView.getEngine();
+            webEngine.load(googleMapsUrl.toString());
+
+            Scene scene = new Scene(webView);
+            fxPanel.setScene(scene);
+        });
+
+        // JSplitPane for side-by-side layout
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, fxPanel);
+        splitPane.setResizeWeight(0.4); // 40% for left panel, 60% for right
+        frame.add(splitPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
     }
