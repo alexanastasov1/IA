@@ -1,7 +1,7 @@
 import javax.swing.*;
 
-public class SavedDayPlansGUI extends JFrame {
-    public SavedDayPlansGUI() {
+public class SavedDayPlans extends JFrame {
+    public SavedDayPlans() {
         setTitle("Saved Day Plans");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);

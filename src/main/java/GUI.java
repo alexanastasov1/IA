@@ -36,7 +36,7 @@ public class GUI extends JFrame implements ActionListener {
             new CreateNewDayPlan();
             // Opens window for creating new day plan
         } else if (e.getSource() == buttonSDP) {
-            new SavedDayPlansGUI();  // Opens window for saved day plans
+            new SavedDayPlans();  // Opens window for saved day plans
         }
     }
 }

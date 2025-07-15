@@ -13,12 +13,10 @@ import com.google.maps.model.PlacesSearchResult;
 public class Main {
     public static void main(String[] args) {
         //Bring up main menu on start
-        Menu mainMenu = new Menu();
         GUI gui = new GUI();
 
         //User to press a button
-        /* int choice = mainMenu.display();
-        while (choice != 3) {
+        /* while (choice != 3) {
             if (choice == 1){ //Open CreateNewDayPlan menu if button pressed
                 CreateNewDayPlan createNewDayPlanMenu = new CreateNewDayPlan();
                 createNewDayPlanMenu.cityValidation();
