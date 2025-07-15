@@ -8,6 +8,10 @@ import java.util.List;
 import java.awt.Desktop;
 import java.net.URI;
 import java.net.URL;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 
 public class CreatedDayPlan extends JFrame {
     private String fileName = "Database.txt";
@@ -172,8 +176,8 @@ public class CreatedDayPlan extends JFrame {
         return R * c; // Returns distance in km
     }
 
-    // Displays the planned route
-    private void displayRoute(List<Attraction> route) {
+    // Displays the planned route and open link in browser
+    /* private void displayRoute(List<Attraction> route) {
         JFrame frame = new JFrame("Created Day Plan for " + cityName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setSize(900, 600);
@@ -257,6 +261,75 @@ public class CreatedDayPlan extends JFrame {
         } catch (IOException | URISyntaxException e) {
             e.printStackTrace();
         }
+    } */
+
+    private void displayRoute(List<Attraction> route) {
+        JFrame frame = new JFrame("Created Day Plan for " + cityName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1200, 700);
+        frame.setLayout(null);
+        frame.setResizable(false);
+
+        // Output area (left)
+        JTextArea outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        outputArea.setLineWrap(true);
+        outputArea.setWrapStyleWord(true);
+
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+        scrollPane.setBounds(30, 30, 500, 620);
+        frame.add(scrollPane);
+
+        // Build output + Google Maps URL
+        StringBuilder output = new StringBuilder();
+        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+        googleMapsUrl.append(latitude).append(",").append(longitude);
+
+        if (route.isEmpty()) {
+            output.append("No attractions available for the route.\n");
+        } else {
+            List<Restaurant> allRestaurants = loadRestaurants();
+            output.append("Planned route:\n");
+
+            for (Attraction a : route) {
+                output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
+                        .append(a.timeAdvised).append(" hours\n");
+
+                List<Restaurant> nearby = new ArrayList<>();
+                for (Restaurant r : allRestaurants) {
+                    if (r.city.equalsIgnoreCase(cityName)) {
+                        double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
+                        if (dist <= 1.0) nearby.add(r);
+                    }
+                }
+
+                if (!nearby.isEmpty()) {
+                    output.append("Nearby vegan options (within 1 km):\n");
+                    for (Restaurant r : nearby) {
+                        output.append("  - ").append(r.name).append(" (").append(r.type).append(")\n");
+                    }
+                } else {
+                    output.append("  No vegan restaurants or cafés nearby.\n");
+                }
+
+                googleMapsUrl.append("/").append(encodeForUrl(a.name));
+            }
+        }
+
+        outputArea.setText(output.toString());
+
+        // Create JavaFX WebView in a JFXPanel
+        JFXPanel jfxPanel = new JFXPanel();
+        jfxPanel.setBounds(550, 30, 600, 620);
+        frame.add(jfxPanel);
+
+        Platform.runLater(() -> {
+            WebView webView = new WebView();
+            webView.getEngine().load(googleMapsUrl.toString());
+            jfxPanel.setScene(new Scene(webView));
+        });
+
+        frame.setVisible(true);
     }
 
     private String encodeForUrl(String name) {
