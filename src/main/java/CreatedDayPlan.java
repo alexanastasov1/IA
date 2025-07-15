@@ -132,19 +132,6 @@ public class CreatedDayPlan extends JFrame {
                 }
             }
 
-            //Debugging
-            /* System.out.println("\n--- Iteration ---");
-            System.out.println("Current location: " + currentLat + ", " + currentLon);
-            System.out.println("Total time used: " + totalTime);
-
-            if (bestPreferred != null) {
-                System.out.println("Best preferred: " + bestPreferred.name + " (" + bestPreferred.type + "), Distance: " + minPreferredDist);
-            } else {
-                System.out.println("No preferred attractions within 1 km.");
-            }
-            System.out.println("Best fallback: " + bestFallback.name + " (" + bestFallback.type + "), Distance: " + minFallbackDist);
-            */
-
             // Ensure bestPreferred is not null
             Attraction next;
             if (bestPreferred != null && minPreferredDist <= 1.0) {
