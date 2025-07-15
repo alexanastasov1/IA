@@ -3,6 +3,7 @@ import java.awt.*;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.awt.Desktop;
@@ -223,7 +224,19 @@ public class CreatedDayPlan extends JFrame {
         Platform.runLater(() -> {
             WebView webView = new WebView();
             WebEngine webEngine = webView.getEngine();
-            webEngine.load(googleMapsUrl.toString());
+
+            // Generate JavaScript-friendly waypoints array
+            List<String> coords = new ArrayList<>();
+            coords.add("{ lat: " + latitude + ", lng: " + longitude + " }");
+            for (Attraction a : route) {
+                coords.add("{ lat: " + a.latitude + ", lng: " + a.longitude + " }");
+            }
+            String waypointArray = "[" + String.join(", ", coords) + "]";
+
+            // Load the HTML content dynamically
+            String htmlContent = loadHtmlWithMap(waypointArray, "AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88");
+
+            webEngine.loadContent(htmlContent, "text/html");
 
             Scene scene = new Scene(webView);
             fxPanel.setScene(scene);
@@ -234,6 +247,26 @@ public class CreatedDayPlan extends JFrame {
         frame.add(splitPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
+    }
+
+    private String loadHtmlWithMap(String waypointsArray, String apiKey) {
+        StringBuilder html = new StringBuilder();
+        try (InputStream in = getClass().getClassLoader().getResourceAsStream("map_template.html")) {
+            if (in == null) throw new FileNotFoundException("map_template.html not found in resources.");
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    html.append(line).append("\n");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "<html><body><h2>Error loading map</h2></body></html>";
+        }
+
+        return html.toString()
+                .replace("%WAYPOINTS%", waypointsArray)
+                .replace("%API_KEY%", apiKey);
     }
 
     private String encodeForUrl(String name) {

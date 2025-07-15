@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Map Route</title>
+    <style>
+        #map {
+            height: 100%;
+            width: 100%;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+
+<script>
+    function initMap() {
+        const waypoints = %WAYPOINTS%;
+        const map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 14,
+            center: waypoints[0],
+            mapTypeId: 'roadmap'
+        });
+
+        const directionsService = new google.maps.DirectionsService();
+        const directionsRenderer = new google.maps.DirectionsRenderer();
+        directionsRenderer.setMap(map);
+
+        const origin = waypoints[0];
+        const destination = waypoints[waypoints.length - 1];
+        const intermediates = waypoints.slice(1, waypoints.length - 1).map(wp => ({ location: wp, stopover: true }));
+
+        directionsService.route({
+            origin: origin,
+            destination: destination,
+            waypoints: intermediates,
+            travelMode: google.maps.TravelMode.WALKING
+        }, function(response, status) {
+            if (status === 'OK') {
+                directionsRenderer.setDirections(response);
+            } else {
+                alert('Directions request failed: ' + status);
+            }
+        });
+    }
+</script>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=%API_KEY%&callback=initMap">
+</script>
+</body>
+</html>
