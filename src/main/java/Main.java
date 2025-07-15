@@ -15,25 +15,7 @@ public class Main {
         //Bring up main menu on start
         GUI gui = new GUI();
 
-        //User to press a button
-        /* while (choice != 3) {
-            if (choice == 1){ //Open CreateNewDayPlan menu if button pressed
-                CreateNewDayPlan createNewDayPlanMenu = new CreateNewDayPlan();
-                createNewDayPlanMenu.cityValidation();
-                createNewDayPlanMenu.setStart_endPoint();
-                createNewDayPlanMenu.getTimeSpan();
-                createNewDayPlanMenu.favouredAttractionType();
-                CreatedDayPlan createdDayPlanMenu = createNewDayPlanMenu.create();
-                createdDayPlanMenu.create();
-            }
-            else if(choice == 2) { //Open SavedDayPlans menu if button pressed
-
-            }
-            choice = mainMenu.display();
-        }
-        System.out.println("Application terminated");
-
-        GeoApiContext context = new GeoApiContext.Builder()
+        /* GeoApiContext context = new GeoApiContext.Builder()
                 .apiKey("AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88")
                 .build();
 
