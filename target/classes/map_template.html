@@ -21,10 +21,23 @@
 <script>
     function initMap() {
         const waypoints = %WAYPOINTS%;
+
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
             center: waypoints[0],
-            mapTypeId: 'roadmap'
+            mapTypeId: 'satellite',
+            mapTypeControlOptions: {
+                mapTypeIds: ['satellite'] // remove roadmap, terrain etc.
+            },
+            <!--
+            styles: [
+                {
+                    featureType: "all",
+                    elementType: "labels",
+                    stylers: [{ visibility: "off" }]
+                }
+            ]
+            -->
         });
 
         const directionsService = new google.maps.DirectionsService();
@@ -33,7 +46,10 @@
 
         const origin = waypoints[0];
         const destination = waypoints[waypoints.length - 1];
-        const intermediates = waypoints.slice(1, waypoints.length - 1).map(wp => ({ location: wp, stopover: true }));
+        const intermediates = waypoints.slice(1, waypoints.length - 1).map(wp => ({
+            location: wp,
+            stopover: true
+        }));
 
         directionsService.route({
             origin: origin,
