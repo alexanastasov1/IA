@@ -17,14 +17,14 @@
             <version>0.15.0</version>
         </dependency>
 
-        <!-- SLF4J API (already included transitively, but keeping for clarity) -->
+        <!-- SLF4J API -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.36</version>
         </dependency>
 
-        <!-- SLF4J Simple Logger (Minimalistic Logging Backend) -->
+        <!-- SLF4J Simple Logger -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
