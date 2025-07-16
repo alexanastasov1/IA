@@ -25,17 +25,10 @@
         const map = new google.maps.Map(document.getElementById('map'), {
             zoom: 14,
             center: waypoints[0],
-            mapTypeId: 'satellite',
+            mapTypeId: 'hybrid',  // hybrid = satellite + labels
             mapTypeControlOptions: {
-                mapTypeIds: ['satellite'] // remove roadmap, terrain etc.
-            },
-            styles: [
-                {
-                    featureType: "all",
-                    elementType: "labels",
-                    stylers: [{ visibility: "off" }]
-                }
-            ]
+                mapTypeIds: ['roadmap', 'satellite', 'hybrid']
+            }
         });
 
         const directionsService = new google.maps.DirectionsService();
