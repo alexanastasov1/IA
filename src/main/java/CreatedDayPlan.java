@@ -242,7 +242,24 @@ public class CreatedDayPlan extends JFrame {
             fxPanel.setScene(scene);
         });
 
-        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, scrollPane, fxPanel);
+        // Save Plan button
+        JButton saveButton = new JButton("Save Plan");
+        saveButton.addActionListener(e -> {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("SavedPlans.txt", true))) {
+                writer.write("#CITY: " + cityName + "\n");
+                writer.write(outputArea.getText());
+                writer.write("#END\n\n");
+                JOptionPane.showMessageDialog(frame, "Plan saved successfully to SavedPlans.txt.");
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(frame, "Failed to save plan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.add(scrollPane, BorderLayout.CENTER);
+        leftPanel.add(saveButton, BorderLayout.SOUTH);
+
+        JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftPanel, fxPanel);
         splitPane.setResizeWeight(0.22);
         frame.add(splitPane, BorderLayout.CENTER);
 

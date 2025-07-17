@@ -1,0 +1,19 @@
+#CITY: London
+PLANNED ROUTE:
+
+The O2 Arena (Sports Venue) - Time: 2.5 hours
+  No vegan restaurants or cafés nearby.
+
+Cutty Sark (Historical Site) - Time: 1.5 hours
+  No vegan restaurants or cafés nearby.
+
+Royal Observatory Greenwich (Museum) - Time: 2.0 hours
+  No vegan restaurants or cafés nearby.
+
+Greenwich Park (Park) - Time: 2.0 hours
+  No vegan restaurants or cafés nearby.
+
+Tower Bridge (Landmark) - Time: 1.0 hours
+  No vegan restaurants or cafés nearby.
+#END
+
