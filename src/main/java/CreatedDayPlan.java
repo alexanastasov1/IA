@@ -262,7 +262,7 @@ public class CreatedDayPlan extends JFrame {
                 writer.write(outputArea.getText());
                 writer.write("#END\n\n");
                 JOptionPane.showMessageDialog(frame, "Plan saved successfully to SavedPlans.txt.");
-                alreadySaved[0] = true;  // Set the flag to prevent future saves
+                alreadySaved[0] = true;
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame, "Failed to save plan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
