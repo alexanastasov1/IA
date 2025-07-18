@@ -224,7 +224,7 @@ public class CreatedDayPlan extends JFrame {
         outputArea.setText(output.toString());
 
         // JavaFX map in a JFXPanel
-        JFXPanel fxPanel = new JFXPanel();  // Always create new
+        JFXPanel fxPanel = new JFXPanel();
 
         Platform.runLater(() -> {
             try {
