@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.util.*;
 import java.util.List;
@@ -9,12 +11,22 @@ public class SavedDayPlans extends JFrame {
     private List<String> planContents = new ArrayList<>();
     private JTextArea displayArea;
     private int selectedPlanIndex = -1;
+    private boolean closedByUser = true;
 
     public SavedDayPlans() {
         setTitle("Saved Day Plans");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(900, 600);
         setLayout(new BorderLayout());
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (closedByUser) {
+                    SwingUtilities.invokeLater(() -> new GUI().setVisible(true));
+                }
+            }
+        });
 
         // Left: Buttons for each plan
         JPanel buttonPanel = new JPanel();
@@ -119,6 +131,7 @@ public class SavedDayPlans extends JFrame {
         }
 
         // Refresh the window
+        closedByUser = false;
         dispose();
         new SavedDayPlans();
     }

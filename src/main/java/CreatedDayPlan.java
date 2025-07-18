@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
@@ -170,6 +172,7 @@ public class CreatedDayPlan extends JFrame {
     }
 
     // Displays the planned route
+    /* Faulty version (Displays route using api)
     private void displayRoute(List<Attraction> route) {
         JFrame frame = new JFrame("Created Day Plan for " + cityName);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -249,7 +252,7 @@ public class CreatedDayPlan extends JFrame {
 
         // Save Plan button
         JButton saveButton = new JButton("Save Plan");
-        final boolean[] alreadySaved = {false};  // Flag to prevent multiple saves
+        final boolean[] alreadySaved = {false};
 
         saveButton.addActionListener(e -> {
             if (alreadySaved[0]) {
@@ -277,8 +280,114 @@ public class CreatedDayPlan extends JFrame {
         frame.add(splitPane, BorderLayout.CENTER);
 
         frame.setVisible(true);
+    } */
+
+    // Working version (Displays route in browser)
+    private void displayRoute(List<Attraction> route) {
+        JFrame frame = new JFrame("Created Day Plan for " + cityName);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setSize(1200, 700);
+        frame.setLayout(new BorderLayout());
+
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                SwingUtilities.invokeLater(() -> new GUI().setVisible(true));
+            }
+        });
+
+        JTextArea outputArea = new JTextArea();
+        outputArea.setEditable(false);
+        outputArea.setLineWrap(true);
+        outputArea.setWrapStyleWord(true);
+        JScrollPane scrollPane = new JScrollPane(outputArea);
+
+        // Route building
+        StringBuilder output = new StringBuilder();
+        StringBuilder googleMapsUrl = new StringBuilder("https://www.google.com/maps/dir/");
+        googleMapsUrl.append(latitude).append(",").append(longitude);
+        googleMapsUrl.append("/data=!4m2!4m1!3e2"); // set walking mode
+
+        if (route.isEmpty()) {
+            output.append("No attractions available for the route.\n");
+        } else {
+            List<Restaurant> allRestaurants = loadRestaurants();
+            output.append("PLANNED ROUTE:\n");
+
+            for (Attraction a : route) {
+                output.append("\n").append(a.name).append(" (").append(a.type).append(") - Time: ")
+                        .append(a.timeAdvised).append(" hours\n");
+
+                List<Restaurant> nearby = new ArrayList<>();
+                for (Restaurant r : allRestaurants) {
+                    if (r.city.equalsIgnoreCase(cityName)) {
+                        double dist = haversine(a.latitude, a.longitude, r.latitude, r.longitude);
+                        if (dist <= 1.0) {
+                            nearby.add(r);
+                        }
+                    }
+                }
+
+                if (!nearby.isEmpty()) {
+                    output.append("Nearby vegan options (within 1 km):\n");
+                    for (Restaurant r : nearby) {
+                        output.append("  - ").append(r.name).append(" (").append(r.type).append(")\n");
+                    }
+                } else {
+                    output.append("  No vegan restaurants or cafés nearby.\n");
+                }
+
+                googleMapsUrl.append("/").append(encodeForUrl(a.name));
+            }
+        }
+
+        outputArea.setText(output.toString());
+
+        // Open in browser button
+        JButton openMapButton = new JButton("Open Map in Browser");
+        openMapButton.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI(googleMapsUrl.toString()));
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(frame, "Failed to open map: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        // Save Plan button
+        JButton saveButton = new JButton("Save Plan");
+        final boolean[] alreadySaved = {false};
+
+        saveButton.addActionListener(e -> {
+            if (alreadySaved[0]) {
+                JOptionPane.showMessageDialog(frame, "Day plan already saved!");
+                return;
+            }
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("SavedPlans.txt", true))) {
+                writer.write("#CITY: " + cityName + "\n");
+                writer.write(outputArea.getText());
+                writer.write("#END\n\n");
+                JOptionPane.showMessageDialog(frame, "Plan saved successfully to SavedPlans.txt.");
+                alreadySaved[0] = true;
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(frame, "Failed to save plan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+
+        JPanel leftPanel = new JPanel(new BorderLayout());
+        leftPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel buttonPanel = new JPanel(new FlowLayout());
+        buttonPanel.add(saveButton);
+        buttonPanel.add(openMapButton);
+
+        leftPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        frame.add(leftPanel, BorderLayout.CENTER);
+        frame.setVisible(true);
     }
 
+    //Used with the faulty version to load map using html
     private String loadHtmlWithMap(String waypointsArray, String apiKey) {
         StringBuilder html = new StringBuilder();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("map_template.html")) {

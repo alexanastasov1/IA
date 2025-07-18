@@ -11,6 +11,7 @@ public class CreateNewDayPlan extends JFrame {
     private JTextField cityField, latField, lonField, timeField;
     private JComboBox<String> typeBox;
     private JButton createButton;
+    private boolean closedByUser = true;
 
     public CreateNewDayPlan() {
         loadAttractions();
@@ -34,6 +35,15 @@ public class CreateNewDayPlan extends JFrame {
         setSize(900, 600);
         setLayout(null);
         setResizable(false);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                if (closedByUser) {
+                    SwingUtilities.invokeLater(() -> new GUI().setVisible(true));
+                }
+            }
+        });
 
         add(new JLabel("City:")).setBounds(300, 50, 100, 30);
         cityField = new JTextField();
@@ -114,6 +124,8 @@ public class CreateNewDayPlan extends JFrame {
 
                 CreatedDayPlan plan = new CreatedDayPlan(city, lat, lon, time, type);
                 plan.create();
+
+                closedByUser = false;
                 dispose();
 
             } catch (NumberFormatException ex) {

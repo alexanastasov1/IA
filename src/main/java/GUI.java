@@ -9,7 +9,7 @@ public class GUI extends JFrame implements ActionListener {
 
     public GUI() {
         setTitle("Day Trip Planner");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // quit the app when window closed
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(900, 600);
         setLayout(null);
         setResizable(false);
@@ -35,9 +35,11 @@ public class GUI extends JFrame implements ActionListener {
         if (e.getSource() == buttonCNDP) {
             new CreateNewDayPlan();
             // Opens window for creating new day plan
+            dispose();
         } else if (e.getSource() == buttonSDP) {
             new SavedDayPlans();
             // Opens window for saved day plans
+            dispose();
         }
     }
 }
