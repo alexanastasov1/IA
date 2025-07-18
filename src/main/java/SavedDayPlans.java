@@ -43,7 +43,7 @@ public class SavedDayPlans extends JFrame {
         for (int i = 0; i < planTitles.size(); i++) {
             final int index = i;
             JButton planButton = new JButton(planTitles.get(i));
-            planButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+            planButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, planButton.getPreferredSize().height));
             planButton.addActionListener(e -> {
                 displayArea.setText(planContents.get(index));
                 selectedPlanIndex = index;
@@ -111,8 +111,8 @@ public class SavedDayPlans extends JFrame {
         // Re-write the file without the deleted plan
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("SavedPlans.txt"))) {
             for (String plan : planContents) {
-                writer.write(plan);
-                writer.write("\n"); // Extra spacing between plans
+                writer.write(plan.trim()); // Trim to remove extra spacing
+                writer.write("\n#END\n\n"); // Properly terminate each plan
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Failed to update saved file.", "Error", JOptionPane.ERROR_MESSAGE);
