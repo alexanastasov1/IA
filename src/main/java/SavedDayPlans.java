@@ -51,7 +51,7 @@ public class SavedDayPlans extends JFrame {
         // Load plans from file
         loadPlans();
 
-        // Create a button for each saved plan
+        // Button for each saved plan
         for (int i = 0; i < planTitles.size(); i++) {
             final int index = i;
             JButton planButton = new JButton(planTitles.get(i));

@@ -95,7 +95,7 @@ public class CreatedDayPlan extends JFrame {
         return restaurants;
     }
 
-    //Filter database for selected city
+    // Filter database for selected city
     private List<Attraction> filterByCity(List<Attraction> attractions) {
         List<Attraction> filtered = new ArrayList<>();
         for (int i = 0; i < attractions.size(); i++) {
@@ -394,7 +394,7 @@ public class CreatedDayPlan extends JFrame {
         frame.setVisible(true);
     }
 
-    //Used with the faulty version to load map using html
+    // Method used with the faulty version to load map using html
     private String loadHtmlWithMap(String waypointsArray, String apiKey) {
         StringBuilder html = new StringBuilder();
         try (InputStream in = getClass().getClassLoader().getResourceAsStream("map_template.html")) {
@@ -424,7 +424,7 @@ public class CreatedDayPlan extends JFrame {
         }
     }
 
-    //Attractions
+    // Attractions
     private static class Attraction {
         String city;
         String name;
@@ -443,7 +443,7 @@ public class CreatedDayPlan extends JFrame {
         }
     }
 
-    //Restaurants/cafes
+    // Restaurants/cafes
     private static class Restaurant {
         String city;
         String name;
