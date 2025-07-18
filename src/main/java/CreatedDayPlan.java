@@ -24,6 +24,11 @@ public class CreatedDayPlan extends JFrame {
     private String attractionType;
     private String restaurantFile = "Restaurants.txt";
 
+    static {
+        Platform.setImplicitExit(false);
+        new JFXPanel();
+    }
+
     public CreatedDayPlan(String cityName, double start_endlatitude, double start_endlongitude, double timeSpan, String attractionType) {
         this.cityName = cityName;
         this.latitude = start_endlatitude;
@@ -220,26 +225,27 @@ public class CreatedDayPlan extends JFrame {
         outputArea.setText(output.toString());
 
         // JavaFX map in a JFXPanel
-        JFXPanel fxPanel = new JFXPanel();
+        JFXPanel fxPanel = new JFXPanel();  // Always create new
+
         Platform.runLater(() -> {
-            WebView webView = new WebView();
-            WebEngine webEngine = webView.getEngine();
+            try {
+                WebView webView = new WebView();
+                WebEngine webEngine = webView.getEngine();
 
-            // Generate JavaScript-friendly waypoints array
-            List<String> coords = new ArrayList<>();
-            coords.add("{ lat: " + latitude + ", lng: " + longitude + " }");
-            for (Attraction a : route) {
-                coords.add("{ lat: " + a.latitude + ", lng: " + a.longitude + " }");
+                List<String> coords = new ArrayList<>();
+                coords.add("{ lat: " + latitude + ", lng: " + longitude + " }");
+                for (Attraction a : route) {
+                    coords.add("{ lat: " + a.latitude + ", lng: " + a.longitude + " }");
+                }
+                String waypointArray = "[" + String.join(", ", coords) + "]";
+                String htmlContent = loadHtmlWithMap(waypointArray, "AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88");
+
+                Scene scene = new Scene(webView);
+                fxPanel.setScene(scene);  // Set scene first
+                webEngine.loadContent(htmlContent, "text/html");  // Then load content
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
-            String waypointArray = "[" + String.join(", ", coords) + "]";
-
-            // Load the HTML content dynamically
-            String htmlContent = loadHtmlWithMap(waypointArray, "AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88");
-
-            webEngine.loadContent(htmlContent, "text/html");
-
-            Scene scene = new Scene(webView);
-            fxPanel.setScene(scene);
         });
 
         // Save Plan button
