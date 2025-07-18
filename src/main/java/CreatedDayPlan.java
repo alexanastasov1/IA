@@ -69,7 +69,7 @@ public class CreatedDayPlan extends JFrame {
         return attractions;
     }
 
-    // Loads vegan restaurants from Restaurants.txt ands stores it in a list
+    // Loads vegan restaurants from Restaurants.txt
     private List<Restaurant> loadRestaurants() {
         List<Restaurant> restaurants = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(restaurantFile))) {
@@ -138,7 +138,6 @@ public class CreatedDayPlan extends JFrame {
                 }
             }
 
-            // Ensure bestPreferred is not null
             Attraction next;
             if (bestPreferred != null && minPreferredDist <= 1.0) {
                 next = bestPreferred;
@@ -160,14 +159,14 @@ public class CreatedDayPlan extends JFrame {
 
     // Uses the Haversine formula to calculate the distance between two coordinates
     private double haversine(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // Earth's radius in km
+        final int R = 6371;
         double dLat = Math.toRadians(lat2 - lat1);
         double dLon = Math.toRadians(lon2 - lon1);
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(dLon / 2) * Math.sin(dLon / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c; // Returns distance in km
+        return R * c;
     }
 
     // Displays the planned route
@@ -241,8 +240,8 @@ public class CreatedDayPlan extends JFrame {
                 String htmlContent = loadHtmlWithMap(waypointArray, "AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88");
 
                 Scene scene = new Scene(webView);
-                fxPanel.setScene(scene);  // Set scene first
-                webEngine.loadContent(htmlContent, "text/html");  // Then load content
+                fxPanel.setScene(scene);
+                webEngine.loadContent(htmlContent, "text/html");
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
