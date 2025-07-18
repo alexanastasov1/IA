@@ -247,7 +247,9 @@ public class CreatedDayPlan extends JFrame {
                     coords.add("{ lat: " + a.latitude + ", lng: " + a.longitude + " }");
                 }
                 String waypointArray = "[" + String.join(", ", coords) + "]";
-                String htmlContent = loadHtmlWithMap(waypointArray, "AIzaSyAa8eDPb8bpJadi3seJxapjhJvy8bkGv88");
+
+                // Replace "YOUR_API_KEY_HERE" with actual API key
+                String htmlContent = loadHtmlWithMap(waypointArray, "YOUR_API_KEY_HERE");
 
                 Scene scene = new Scene(webView);
                 fxPanel.setScene(scene);
