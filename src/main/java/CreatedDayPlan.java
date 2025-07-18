@@ -248,7 +248,7 @@ public class CreatedDayPlan extends JFrame {
                 }
                 String waypointArray = "[" + String.join(", ", coords) + "]";
 
-                // Replace "YOUR_API_KEY_HERE" with actual API key
+                // REPLACE YOUR_API_KEY_HERE WITH ACTUAL API KEY
                 String htmlContent = loadHtmlWithMap(waypointArray, "YOUR_API_KEY_HERE");
 
                 Scene scene = new Scene(webView);
