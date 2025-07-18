@@ -179,6 +179,13 @@ public class CreatedDayPlan extends JFrame {
         frame.setSize(1200, 700);
         frame.setLayout(new BorderLayout());
 
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                SwingUtilities.invokeLater(() -> new GUI().setVisible(true));
+            }
+        });
+
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
         outputArea.setLineWrap(true);
