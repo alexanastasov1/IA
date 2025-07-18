@@ -111,8 +111,8 @@ public class SavedDayPlans extends JFrame {
         // Re-write the file without the deleted plan
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("SavedPlans.txt"))) {
             for (String plan : planContents) {
-                writer.write(plan.trim()); // Trim to remove extra spacing
-                writer.write("\n#END\n\n"); // Properly terminate each plan
+                writer.write(plan.trim());
+                writer.write("\n#END\n\n");
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(this, "Failed to update saved file.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -120,6 +120,6 @@ public class SavedDayPlans extends JFrame {
 
         // Refresh the window
         dispose();
-        new SavedDayPlans(); // Re-open the window with updated data
+        new SavedDayPlans();
     }
 }
