@@ -249,12 +249,20 @@ public class CreatedDayPlan extends JFrame {
 
         // Save Plan button
         JButton saveButton = new JButton("Save Plan");
+        final boolean[] alreadySaved = {false};  // Flag to prevent multiple saves
+
         saveButton.addActionListener(e -> {
+            if (alreadySaved[0]) {
+                JOptionPane.showMessageDialog(frame, "Day plan already saved!");
+                return;
+            }
+
             try (BufferedWriter writer = new BufferedWriter(new FileWriter("SavedPlans.txt", true))) {
                 writer.write("#CITY: " + cityName + "\n");
                 writer.write(outputArea.getText());
                 writer.write("#END\n\n");
                 JOptionPane.showMessageDialog(frame, "Plan saved successfully to SavedPlans.txt.");
+                alreadySaved[0] = true;  // Set the flag to prevent future saves
             } catch (IOException ex) {
                 JOptionPane.showMessageDialog(frame, "Failed to save plan: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
